@@ -1,0 +1,37 @@
+{
+  "tag": "r/CodingHelp#6894",
+	"name": "r/CodingHelp",
+	"id": "1017655436704481290",
+	"image": "https://codinghelp.site/bots/codinghelp.png",
+	"avatar": "https://codinghelp.site/bots/codinghelp.png",
+	"uptime": "https://stats.uptimerobot.com/v56YJuEr3x",
+	"inviteLink": "https://discord.com/api/oauth2/authorize?client_id=739190110402379876&permissions=8&scope=applications.commands%20bot",
+	"botInviteLink": "https://discord.com/oauth2/authorize?client_id=1017655436704481290&permissions=8&integration_type=0&scope=bot+applications.commands",
+	"ownerID": "455926927371534346",
+	"defaultCooldown": 5,
+	"servers": {
+		"codinghelp": {
+			"id": "359760149683896320",
+			"suggestionsChannelId": "433877613128450061",
+			"announcementsChannelId": "359760352470368281",
+			"botSpamChannelId": "433962402292432896",
+			"modBotSpamChannelId": "989519826521313307",
+			"modRoles": ["359760149683896323"],
+			"modIDs": ["455926927371534346"],
+			"generalCategoryID": "359760149683896321",
+			"welcomeChannelId": "359760149683896320",
+			"rulesChannelID": "808548019041468416"
+		},
+		"mine": {
+			"id": "718253204147798047",
+			"suggestionsChannelId": "1010302476580298867",
+			"announcementsChannelId": "1014995248163852298",
+			"botSpamChannelId": "1406106241255866418",
+			"modBotSpamChannelId": "1406112392651210802",
+			"modRoles": ["718253309101867008"],
+			"modIDs": ["455926927371534346"],
+			"generalCategoryID": "989909861003325460",
+			"welcomeChannelId": "1406089587553468436"
+		}
+	}
+}
