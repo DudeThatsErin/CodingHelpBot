@@ -1,0 +1,410 @@
+{
+  "prefix_commands": {
+    "Challenge System Commands": [
+      {
+        "name": "add-points",
+        "description": "This allows **mods** to automatically add points to a participant's challenge to the Challenges database.",
+        "aliases": ["addpnts", "pluspnts", "addpoints", "apnts", "pluspoints"],
+        "usage": "++add-points <message ID> <number of points>",
+        "example": "++add-points 850726247050903562 3"
+      },
+      {
+        "name": "autoadd-members",
+        "description": "This allows **mods** to automatically add participants to the Challenges database.",
+        "aliases": ["autoaddppl", "autoaddparticipants", "autoaddchallengers", "aap", "auto-add-participants", "autoadd", "aam"],
+        "usage": "++autoadd-members",
+        "example": "++autoadd-members"
+      },
+      {
+        "name": "leaderboard",
+        "description": "This gives users the ability to see the top 10 users on the leaderboard and also their position on the leaderboard.",
+        "aliases": ["ldbd", "challenge-leaderboard", "cleaderboard", "cldbd", "lbd", "ldb"],
+        "usage": "++leaderboard",
+        "example": "++leaderboard or ++ldb or ++lbd"
+      },
+      {
+        "name": "challenge",
+        "description": "This command allows **mods** to add additional challenge questions to the Challenge System.",
+        "aliases": ["new-challenge", "chall", "c"],
+        "usage": "++challenge [challenge number] [question]",
+        "example": "++challenge 1 What is my favorite color?"
+      },
+      {
+        "name": "check-participants",
+        "description": "This allows **mods** to check who has the participants role in their server.",
+        "aliases": ["cp", "contestants", "challenge-users", "check-users"],
+        "usage": "++check-participants",
+        "example": "++check-participants"
+      },
+      {
+        "name": "clear-points",
+        "description": "This gives **mods** the ability to mark a submission as unreviewed.",
+        "aliases": ["clearpoints", "cp"],
+        "usage": "++clear-points [message ID]",
+        "example": "++clear-points 841330343641874532"
+      },
+      {
+        "name": "edit-challenge",
+        "description": "This gives **mods** the ability to edit the challenge questions that get asked.",
+        "aliases": ["editchal", "editchallenge", "modify-challenge", "ec"],
+        "usage": "++edit-challenge [challenge number] [new question]",
+        "example": "++ec 5 What type of pizza is Erin's favorite?"
+      },
+      {
+        "name": "edit-submission",
+        "description": "This gives users the ability to edit the submission answers that they previously submitted. If you need your message ID, contact one of the Challenge Moderators and they can get that for you.",
+        "aliases": ["editsub", "edit-sub", "es", "mc", "modify-submission", "modify-sub", "modifysub", "edits", "editsubmission"],
+        "usage": "++edit-submission [message ID] [new answer]",
+        "example": "++edit-submission 841302144727646269 I like pudding!"
+      },
+      {
+        "name": "end-challenge",
+        "description": "This gives **mods** the ability to end the challenge that was just being played.",
+        "aliases": ["endchallenge", "echallenge", "exitchallenge", "exitc", "over"],
+        "usage": "++end-challenge",
+        "example": "++end-challenge"
+      },
+      {
+        "name": "add-user",
+        "description": "This allows **mods** to manually add users to the participants database.",
+        "aliases": ["add-user", "manualadd-user", "manual-add-user", "manualadduser", "mau"],
+        "usage": "++manual-add-user",
+        "example": "++manual-add-user 839863262026924083"
+      },
+      {
+        "name": "mod-check-submissions",
+        "description": "This allows **mods** to check who has submitted a response.",
+        "aliases": ["mcs", "mcksubs", "mck-subs", "modchecksubmissions"],
+        "usage": "++mod-check-submissions [challenge number]",
+        "example": "++mod-check-submissions 1"
+      },
+      {
+        "name": "purge-submissions",
+        "description": "This gives **Erin** the ability to purge all submissions from the submissions database. *Note:* This does *not* delete them from the channel within discord.",
+        "aliases": ["purges", "psubmissions", "psubs", "purgesubs", "deletesubs", "delete-subs"],
+        "usage": "++purge-submissions",
+        "example": "++purge-submissions"
+      },
+      {
+        "name": "remove-user",
+        "description": "This allows **mods** to manually remove users to the participants database.",
+        "aliases": ["remove-people", "removeuser"],
+        "usage": "++remove-user <tag user or ID>",
+        "example": "++remove-user @DudeThatsErin"
+      },
+      {
+        "name": "remove-points",
+        "description": "This allows **mods** to automatically remove points from a participant's challenge in the Challenges database.",
+        "aliases": ["removepnts", "minuspnts", "minuspoints", "mpnts", "removepoints", "clearpoints", "clear-points"],
+        "usage": "++remove-points <message ID> <number of points>",
+        "example": "++remove-points 850726247050903562 3"
+      },
+      {
+        "name": "remove-submissions",
+        "description": "This allows **mods** to remove responses to challenges.",
+        "aliases": ["rs", "rmsubs", "rm-subs", "removesubmissions", "remove-submission", "removesubmission", "rmsub"],
+        "usage": "++remove-submissions [message ID]",
+        "example": "++remove-submissions 841301824115965952"
+      },
+      {
+        "name": "reviewed",
+        "description": "This gives **mods** the ability to review submissions.",
+        "aliases": ["mark", "review"],
+        "usage": "++reviewed [challenge number] <number of points> [message ID]",
+        "example": "++reviewed 1 1 841143871689064448"
+      },
+      {
+        "name": "start-challenge",
+        "description": "This gives **mods** the ability to start a challenge by storing the prizes for 1st, 2nd and 3rd place as well as the announcements channel ID.",
+        "aliases": ["sc", "start", "startchallenge", "startc", "startchall"],
+        "usage": "++start-challenge [announcements channel ID] [prize 1|prize 2|prize 3]",
+        "example": "++start-challenge 841366694948765786 Nitro|Nitro Classic|Special Role"
+      },
+      {
+        "name": "submit",
+        "description": "This is how users can submit answers to the challenge questions.",
+        "aliases": ["submits", "answer"],
+        "usage": "++submit [challenge number] [answer]",
+        "example": "```++submit 1```language\n//code here```\nadditional information here.\n```\nPlease remove the spaces between the backticks before language and after `//code here`. If you are submitting a link, please use this format: ```++submit 1 https://github.com``` Meaning keep it all on the same line. Not formatting it this way will cause issues with our system."
+      },
+      {
+        "name": "unreview",
+        "description": "This gives **mods** the ability to mark a submission as unreviewed.",
+        "aliases": ["unreviewed", "notreviewed", "noreview", "not-reviewed", "no-review"],
+        "usage": "++unreview [message ID]",
+        "example": "++unreview 987456977259821"
+      },
+      {
+        "name": "user-check-submissions",
+        "description": "This allows users to check see what submissions that they have made and provides them with their message ID.",
+        "aliases": ["ucs", "ucksubs", "uck-subs", "userchecksubmissions"],
+        "usage": "++user-check-submissions",
+        "example": "++user-check-submissions"
+      }
+    ],
+    "Admin Commands": [
+      {
+        "name": "createcommands",
+        "description": "Allows Erin to create the Slash Commands.",
+        "aliases": ["startslash", "create-commands", "createcommands", "cc"],
+        "usage": "++createcommands",
+        "example": "++createcommands"
+      },
+      {
+        "name": "deletecommands",
+        "description": "Allows Erin to delete the Slash Commands.",
+        "aliases": ["endslash", "delete-commands", "deletecommands", "dc"],
+        "usage": "++deletecommands",
+        "example": "++deletecommands"
+      }
+    ]
+  },
+  "slash_commands": {
+    "General Commands": [
+      {
+        "name": "help",
+        "description": "This allows users to find out more information on all of our commands.",
+        "aliases": [],
+        "usage": "/help or /help [command name here]",
+        "example": "/help or /help algorithm"
+      },
+      {
+        "name": "algorithm",
+        "description": "Get algorithm solutions and explanations for common problems.",
+        "aliases": [],
+        "usage": "/algorithm <problem>",
+        "example": "/algorithm sorting"
+      }
+    ],
+    "Admin Commands": [
+      {
+        "name": "bot-status",
+        "description": "Pushes an embed to display in the channel about a bot update",
+        "aliases": [],
+        "usage": "/bot-status <message>",
+        "example": "/bot-status Fixed a bug in the help command"
+      },
+      {
+        "name": "disable-system",
+        "description": "Disables a bot system (challenges, suggestions, reports, thanks)",
+        "aliases": [],
+        "usage": "/disable-system <system>",
+        "example": "/disable-system challenges"
+      },
+      {
+        "name": "dm",
+        "description": "Sends an official DM to a specified user",
+        "aliases": [],
+        "usage": "/dm <user> <message>",
+        "example": "/dm @user Please follow the server rules"
+      },
+      {
+        "name": "enable-system",
+        "description": "Enables a bot system (challenges, suggestions, reports, thanks)",
+        "aliases": [],
+        "usage": "/enable-system <system>",
+        "example": "/enable-system suggestions"
+      },
+      {
+        "name": "server-status",
+        "description": "Pushes an embed to display in the channel about a server update",
+        "aliases": [],
+        "usage": "/server-status <message>",
+        "example": "/server-status New channels added for Python discussions"
+      },
+      {
+        "name": "site-status",
+        "description": "Pushes an embed to display in the channel about a website update",
+        "aliases": [],
+        "usage": "/site-status <message>",
+        "example": "/site-status Website maintenance scheduled for tonight"
+      },
+      {
+        "name": "sub-status",
+        "description": "Pushes an embed to display in the channel about a subreddit update",
+        "aliases": [],
+        "usage": "/sub-status <message>",
+        "example": "/sub-status New rules added to the subreddit"
+      },
+      {
+        "name": "system-status",
+        "description": "Shows the status of all bot systems",
+        "aliases": [],
+        "usage": "/system-status",
+        "example": "/system-status"
+      }
+    ],
+    "Information Commands": [
+      {
+        "name": "career",
+        "description": "Allows users to get information on how to get careers in the IT field.",
+        "aliases": [],
+        "usage": "/career",
+        "example": "/career"
+      },
+      {
+        "name": "djs",
+        "description": "Sends an invite link to the Discord.js Discord Server",
+        "aliases": [],
+        "usage": "/djs",
+        "example": "/djs"
+      },
+      {
+        "name": "ddev",
+        "description": "Sends a link to join the Discord Developers Discord Server",
+        "aliases": [],
+        "usage": "/ddev",
+        "example": "/ddev"
+      },
+      {
+        "name": "djslangfirst",
+        "description": "Asks users to learn JavaScript before trying to learn Discord.js",
+        "aliases": [],
+        "usage": "/djslangfirst",
+        "example": "/djslangfirst"
+      },
+      {
+        "name": "dom-listening",
+        "description": "Sends information about why not to use dom listening attributes/properties.",
+        "aliases": [],
+        "usage": "/dom-listening",
+        "example": "/dom-listening"
+      },
+      {
+        "name": "dpy",
+        "description": "Sends an invite link to the Discord.py Discord Server.",
+        "aliases": [],
+        "usage": "/dpy",
+        "example": "/dpy"
+      },
+      {
+        "name": "editors",
+        "description": "Sends information on commonly used IDEs or Text Editors.",
+        "aliases": [],
+        "usage": "/editors",
+        "example": "/editors"
+      },
+      {
+        "name": "freelance",
+        "description": "Allows users to get information on how to self employment or freelancing.",
+        "aliases": [],
+        "usage": "/freelance",
+        "example": "/freelance"
+      },
+      {
+        "name": "largehosting",
+        "description": "Sends information about hosting providers.",
+        "aliases": [],
+        "usage": "/largehosting",
+        "example": "/largehosting"
+      },
+      {
+        "name": "nojquery",
+        "description": "Sends information on why JQuery isn't used and is bad to use.",
+        "aliases": [],
+        "usage": "/nojquery",
+        "example": "/nojquery"
+      },
+      {
+        "name": "noscreens",
+        "description": "Sends information on why it is best to avoid sending screenshots of your code.",
+        "aliases": [],
+        "usage": "/noscreens",
+        "example": "/noscreens"
+      },
+      {
+        "name": "react",
+        "description": "Sends an invite link to the Reactiflux Discord Server",
+        "aliases": [],
+        "usage": "/react",
+        "example": "/react"
+      },
+      {
+        "name": "smallhosting",
+        "description": "This is a small snippet from our `/largehosting` command.",
+        "aliases": [],
+        "usage": "/smallhosting",
+        "example": "/smallhosting"
+      },
+      {
+        "name": "vla",
+        "description": "Sends info on what a VLA is and why is it bad?",
+        "aliases": [],
+        "usage": "/vla",
+        "example": "/vla"
+      },
+      {
+        "name": "w3c",
+        "description": "Informs our users why they should avoid w3schools like the plague.",
+        "aliases": [],
+        "usage": "/w3c",
+        "example": "/w3c"
+      },
+      {
+        "name": "webassembly",
+        "description": "Sends an invite link to the Web Assembly Discord Server.",
+        "aliases": [],
+        "usage": "/webassembly",
+        "example": "/webassembly"
+      }
+    ],
+    "Message Issue Commands": [
+      {
+        "name": "bin",
+        "description": "Tells people a few places they could go to share long pieces of code.",
+        "aliases": [],
+        "usage": "/bin",
+        "example": "/bin"
+      },
+      {
+        "name": "elaborate",
+        "description": "Asks people to elaborate by including code or by including more information.",
+        "aliases": [],
+        "usage": "/elaborate @username or user ID",
+        "example": "/elaborate @DudeThatsErin"
+      },
+      {
+        "name": "error",
+        "description": "Tells people to post the full stack trace.",
+        "aliases": [],
+        "usage": "/error",
+        "example": "/error"
+      },
+      {
+        "name": "faq",
+        "description": "Tells users to check out our FAQ channel and docs to get their simple questions answered.",
+        "aliases": [],
+        "usage": "/faq @username or user ID",
+        "example": "/faq @user"
+      },
+      {
+        "name": "format",
+        "description": "Asks people to format their code with backticks or by sharing their code on places like pastebin.com",
+        "aliases": [],
+        "usage": "/format @username or user ID",
+        "example": "/format @DudeThatsErin"
+      },
+      {
+        "name": "gettinganswers",
+        "description": "Sends information on how to ask better questions.",
+        "aliases": [],
+        "usage": "/gettinganswers",
+        "example": "/gettinganswers"
+      },
+      {
+        "name": "hire",
+        "description": "Refers people to the request-coders channel to hire someone.",
+        "aliases": [],
+        "usage": "/hire @username or user ID",
+        "example": "/hire @DudeThatsErin"
+      },
+      {
+        "name": "rules",
+        "description": "Asks users to make sure they are following the rules.",
+        "aliases": [],
+        "usage": "/rules @username or user ID rule number[1-5] or /rules @username or ID all",
+        "example": "/rules @DudeThatsErin#8736 4 or /rules @DudeThatsErin#8736 all"
+      }
+    ]
+  }
+}
