@@ -9,7 +9,7 @@ module.exports = {
     challengeMods: 1,
     async execute (message, args) {
 
-                const result = await connection.query(
+                const result = await connection.all(
                     `SELECT * FROM Challenges WHERE guildId = ?`,
                     [message.guild.id]
                 );

@@ -15,15 +15,15 @@ module.exports = {
             let day = args[0];
             let title = args.slice(1).join(' ');
 
-            const result = await connection.query(
+            const result = await connection.all(
                 `SELECT * FROM Challenge WHERE guildId = ?;`,
                 [message.guild.id]
             );
-            const msgId = result[0][0].msgId;
-            const ch = result[0][0].channelD;
+            const msgId = result[0].msgId;
+            const ch = result[0].channelD;
             const channel = message.guild.channels.cache.find(c => c.id === ch);
 
-            connection.query(
+            await connection.run(
                 `UPDATE Challenge SET title = ? WHERE msgId = ? AND guildId = ?`,
                 [title, msgId, message.guild.id]
             );

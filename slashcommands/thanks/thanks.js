@@ -26,7 +26,7 @@ module.exports = {
       return;
     }
 
-    await connection.query(
+    await connection.run(
       `INSERT INTO Thanks (userId, user, thanks) VALUES (?, ?, ?);`,
       [thanker, thankee, 1]
     );
@@ -35,7 +35,7 @@ module.exports = {
       `select sum(cast(thanks as unsigned)) as total from Thanks where user = ?;`,
       [thankee]
     );
-    const no = results[0][0].total;
+    const no = results[0].total;
 
     interaction.reply({ content: `You thanked ${mention.username}! They now have ${no} thanks. Use the \`/thanks-leaderboard\` command to see where you stand.`});
 

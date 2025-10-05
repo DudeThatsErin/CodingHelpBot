@@ -17,15 +17,15 @@ module.exports = {
         let answer = args.slice(1).join(' ');
         let moderator = message.author.id;
 
-        const result = await connection.query(
+        const result = await connection.all(
             `SELECT * FROM Challenge WHERE guildId = ?;`,
             [guildId]
         );
-        const announcementsChannel = result[0][0].channelD;
+        const announcementsChannel = result[0].channelD;
 
 
         if (!challengeNo) {
-                const challenge = await connection.query(
+                const challenge = await connection.all(
                     `SELECT * FROM Challenge WHERE guildId = ? ORDER BY challengeNo DESC LIMIT 1;`,
                     [guildId]
                 );
@@ -47,18 +47,17 @@ module.exports = {
                     .setFooter({text:`Run the ${config.prefix}submit command to submit answers to this challenge.`});
 
 
-                message.guild.channels.cache.get(announcementsChannel).send({text:`Hey, <@&850732454770901002> A new challenge is up!`, embeds: [embeD]}).then(message => {
-                    const msg = message.id;
-                    connection.query(
-                        `INSERT INTO Challenge (guildId, msgId, moderator, title, challengeNo) VALUES (?, ?, ?, ?, ?)`,
-                        [guildId, msg, moderator, answer, challengeNo]
-                    );
-                });
-                const results = await connection.query(
+                const sentMessage = await message.guild.channels.cache.get(announcementsChannel).send({text:`Hey, <@&850732454770901002> A new challenge is up!`, embeds: [embeD]});
+                const msg = sentMessage.id;
+                await connection.run(
+                    `INSERT INTO Challenge (guildId, msgId, moderator, title, challengeNo) VALUES (?, ?, ?, ?, ?)`,
+                    [guildId, msg, moderator, answer, challengeNo]
+                );
+                const results = await connection.all(
                     `SELECT * FROM Challenge WHERE guildId = ? AND challengeNo = ?;`,
                     [guildId, challengeNo]
                 );
-                const res = results[0][0];
+                const res = results[0];
                 const mes = res.msgId;
                 let embed = new Discord.EmbedBuilder()
                     .setColor(0x92caa0)

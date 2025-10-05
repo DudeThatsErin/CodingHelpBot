@@ -85,7 +85,7 @@ module.exports = {
             { name: 'Use the following command to edit your report:', value: `\`/editreport ${reportNo}\``},
             { name: 'Use the following command if you want to delete your report:', value: `\`/deletereport ${reportNo}\``}
             );
-        await connection.query(
+        await connection.run(
             `INSERT INTO reports (messageId, authorId, avatar, description, file) VALUES(?, ?, ?, ?, ?);`, [reportNo, author, avatar, description, url]
         );
 

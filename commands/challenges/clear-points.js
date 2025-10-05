@@ -27,7 +27,7 @@ module.exports = {
                     .setDescription(`Thank you for that, ${author}!`)
                     .setFooter({text:'If there is a problem with this, please report it!'});
 
-                connection.query(
+                await connection.run(
                     `UPDATE Submissions SET mod = ? AND points = ? WHERE msgId = ?;`,
                     [NULL, NULL, msgId]
                 );

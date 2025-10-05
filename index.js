@@ -9,12 +9,17 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBit
 
 // configurations
 const config = require('./config/config.json');
+const { initializeCoreTables } = require('./database-init.js');
+
 client.commands = new Collection();
 client.slashCommands = new Collection();
 client.cooldowns = new Collection();
 client.slashCooldowns = new Collection();
 client.erinCommands = new Collection();
 const { cooldowns, slashCooldowns } = client;
+
+// Initialize core database tables on startup
+initializeCoreTables();
 
 
 // for all commands

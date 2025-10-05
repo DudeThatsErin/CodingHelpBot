@@ -18,18 +18,18 @@ module.exports = {
     async execute(interaction, client) {
 
         let messageId = interaction.options.getString('messageid');
-            const results = await connection.query(
+            const results = await connection.all(
                 `SELECT * FROM reports WHERE messageId = ?;`,
                 [messageId]
             );
-            const OG = results[0][0].authorId;
+            const OG = results[0].authorId;
             let usr = message.guild.members.cache.get(OG);
             const author = client.users.cache.find(user => user.id === OG);
             const authorUsername = author.username;
-            const original = results[0][0].description;
-            const avatar = results[0][0].avatar;
-            const file = results[0][0]?.file || 'No file was uploaded';
-            const status = results[0][0]?.stat || 'I have not started working on it yet. I will get to it as soon as I can. Thank you!';
+            const original = results[0].description;
+            const avatar = results[0].avatar;
+            const file = results[0]?.file || 'No file was uploaded';
+            const status = results[0]?.stat || 'I have not started working on it yet. I will get to it as soon as I can. Thank you!';
 
             const report = {
                 color: 0x5241CE,

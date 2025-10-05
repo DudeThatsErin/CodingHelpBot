@@ -1,11 +1,11 @@
 const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
+const { Routes } = require('discord.js');
 const bot = require('../../config/bot.json');
 const token = require('../../config/config.json').token;
 
 module.exports = {
   name: 'deletecommands',
-  aliases: ['endslash', 'delete-commands'],
+  aliases: ['endslash', 'delete-commands', 'dc'],
   description: 'Allows Erin to delete the Slash Commands.',
   ownerOnly: 1,
   execute(message) {
@@ -14,7 +14,7 @@ module.exports = {
     (async () => {
         try {
 
-          //console.log('client ', message.client.slashCommands)
+          console.log('deleting commands... ', message.client.slashCommands)
 
             await rest.put(
                 Routes.applicationGuildCommands(bot.id, bot.serverId),
@@ -36,7 +36,5 @@ module.exports = {
             message.reply({content: `There was an error... ${error}`});
         }
     })();
-
-    message.reply({content: 'deleted the commands!'});
   }
 }

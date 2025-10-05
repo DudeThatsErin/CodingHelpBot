@@ -7,8 +7,8 @@ module.exports = {
     usage: `/clearreports`,
     ownerOnly: 1,
     async execute(interaction) {
-        await connection.query(
-            `TRUNCATE TABLE reports;`
+        await connection.run(
+            `DELETE FROM reports;`
         );
         const fetchedChannel = interaction.guild.channels.cache.get(bot.reportsChId);
         fetchedChannel.bulkDelete(99, true);

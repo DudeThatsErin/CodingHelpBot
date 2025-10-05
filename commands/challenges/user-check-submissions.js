@@ -12,7 +12,7 @@ module.exports = {
     async execute (message, args) {
         let name = message.author.id;
 
-        const result = await connection.query(
+        const result = await connection.all(
             `SELECT * FROM Submissions WHERE guildId = ? AND author = ?;`,
             [message.guild.id, name]
         );

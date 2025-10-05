@@ -40,7 +40,7 @@ module.exports = {
                     message.guild.channels.cache.get(announcementsChannel).send({ embeds: [rules] });
 
                         const msg = message.id;
-                            connection.query(
+                            await connection.run(
                                 `INSERT INTO Challenge (guildId, msgId, channelD, moderator, prize1, prize2, prize3) VALUES (?, ?, ?, ?, ?, ?, ?)`,
                                 [guild, msg, announcementsChannel, mod, prizes[0], prizes[1], prizes[2]]
                             );

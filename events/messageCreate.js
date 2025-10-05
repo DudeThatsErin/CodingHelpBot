@@ -81,10 +81,18 @@ module.exports = {
             }
         }
 
-        const partsResults = await connection.query(
-            `SELECT * FROM Challenges WHERE guildId = ?;`,
-            [message.guild.id]
-        );
+        // Check if challenge system is enabled before querying challenge tables
+        const { isSystemEnabled } = require('../database-init.js');
+        const challengeSystemEnabled = await isSystemEnabled(message.guild.id, 'challenges');
+        
+        let partsResults = [];
+        if (challengeSystemEnabled) {
+            partsResults = await connection.all(
+                `SELECT * FROM Challenges WHERE guildId = ?;`,
+                [message.guild.id]
+            );
+        }
+        
         if(command.partsOnly === 1) {
             for(const ID of partsResults.player) {
                 if(message.member.id == ID) {

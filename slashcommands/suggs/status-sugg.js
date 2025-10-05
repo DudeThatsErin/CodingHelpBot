@@ -18,13 +18,13 @@ module.exports = {
     async execute(interaction) {
 
         const msgId = interaction.options.getString('messageid');
-        const result = await connection.query(
+        const result = await connection.all(
             `SELECT noSugg from Suggs WHERE noSugg = ?;`,
             [msgId]
         );
-        const mId = result[0][0].noSugg;
+        const mId = result[0].noSugg;
 
-        const result2 = await connection.query(
+        const result2 = await connection.all(
             `SELECT Author from Suggs WHERE noSugg = ?;`,
             [msgId],
         );
@@ -32,25 +32,25 @@ module.exports = {
         const aut = await interaction.guild.members.fetch(OGauthor);
         const name = aut.user.username;
 
-        const result3 = await connection.query(
+        const result3 = await connection.all(
             `SELECT Message from Suggs WHERE noSugg = ?;`,
             [msgId],
         );
         const suggestion = result3[0][0].Message;
 
-        const result4 = await connection.query(
+        const result4 = await connection.all(
             `SELECT Avatar from Suggs WHERE noSugg = ?;`,
             [msgId],
         );
         const avatar = result4[0][0].Avatar;
         
-        const result5 = await connection.query(
+        const result5 = await connection.all(
             `SELECT LAST_EDITED from Suggs WHERE noSugg = ?`,
             [msgId],
         );
         const date = result5[0][0].LAST_EDITED;
 
-        const result6 = await connection.query(
+        const result6 = await connection.all(
             `SELECT Moderator from Suggs WHERE noSugg = ?`,
             [msgId],
         );
@@ -63,7 +63,7 @@ module.exports = {
             mdd = result6[0][0].Moderator;
         }
 
-        const result7 = await connection.query(
+        const result7 = await connection.all(
             `SELECT stat from Suggs WHERE noSugg = ?`,
             [msgId],
         );

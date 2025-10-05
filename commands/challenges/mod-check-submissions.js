@@ -18,7 +18,7 @@ module.exports = {
                 message.channel.send({content:'Please include the challenge number you want to check the submissions for. Thank you!'});
                 return;
             } else {
-                const result2 = await connection.query(
+                const result2 = await connection.all(
                     `SELECT * FROM Challenge WHERE guildId = ? AND challengeNo = ?;`,
                     [message.guild.id, challengeNo]
                 );
@@ -32,7 +32,7 @@ module.exports = {
                     message.channel.send({content:`📨 I have sent you a private message!`})
                 message.client.users.cache.get(name).send({ embeds: [embed] });
 
-                const result = await connection.query(
+                const result = await connection.all(
                     `SELECT * FROM Submissions WHERE guildId = ? AND challengeNo = ?;`,
                     [message.guild.id, challengeNo]
                 );

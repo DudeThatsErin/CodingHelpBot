@@ -19,15 +19,15 @@ module.exports = {
                 message.channel.send({content:'Please include the message ID of the submission you want to remove. Thank you!'});
                 return;
             } else {
-                const results = await connection.query(
+                const results = await connection.all(
                     `SELECT * FROM Submissions WHERE msgId = ? AND guildId = ?;`,
                     [submission, message.guild.id]
                 )
-                    const player = results[0][0].author;
+                    const player = results[0].author;
                     const user = await message.client.users.fetch(player).catch(err => {console.log(err);});
                     const username = user.username;
-                    const Submissions = results[0][0].message;
-                    const dayNo = results[0][0].challengeNo;
+                    const Submissions = results[0].message;
+                    const dayNo = results[0].challengeNo;
 
                     const embed = new Discord.EmbedBuilder()
                         .setColor(0xd4a066)
@@ -37,7 +37,7 @@ module.exports = {
 
                 message.channel.send({ embeds: [embed] });
 
-                        await connection.query(
+                        await connection.run(
                             `DELETE FROM Submissions WHERE msgId = ? AND guildId = ?;`,
                             [submission, message.guild.id]
                         );

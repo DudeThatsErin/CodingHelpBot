@@ -17,12 +17,12 @@ module.exports = {
         let userNames = '';
         let points = '';
 
-        const results = await connection.query(
+        const results = await connection.all(
             `SELECT * FROM Submissions WHERE author = ? AND guildId = ?;`,
             [author, guild]
         );
 
-        const top10 = await connection.query(
+        const top10 = await connection.all(
             `SELECT author, SUM(CAST(points AS UNSIGNED)) AS total FROM Submissions WHERE guildId = ? GROUP BY author ORDER BY total DESC LIMIT 10;`,
             [guild]
         );
@@ -39,7 +39,7 @@ module.exports = {
 
         if(top10 === undefined || top10[0] === undefined || top10[0][0] === undefined) {
             message.channel.send('No one is on the leaderboard yet.');
-        } else if(results === undefined || results[0] === undefined || results[0][0] === undefined) {
+        } else if(results === undefined || results[0] === undefined || results[0] === undefined) {
 
 
             let embed2 = new Discord.EmbedBuilder()
@@ -55,7 +55,7 @@ module.exports = {
             message.channel.send({ embeds: [embed2] });
 
          } else {
-            const ponts = await connection.query(
+            const ponts = await connection.all(
                 `SELECT points, SUM(CAST(points AS UNSIGNED)) AS total FROM Submissions WHERE guildId = ? AND author = ?;`,
                 [guild, author]
             );

@@ -15,11 +15,11 @@ module.exports = {
             let author = message.author.username;
             let name = message.author.id;
             let points = args[1];
-            const results = await connection.query(
+            const results = await connection.all(
                 `SELECT * FROM Submissions WHERE msgId = ?;`,
                 [msgId]
             );
-            let player = results[0][0].author;
+            let player = results[0].author;
             let playerID = await message.client.users.fetch(player).catch(err => {console.log(err);});
             let playerName = playerID.username;
 
@@ -35,7 +35,7 @@ module.exports = {
                         .setDescription(`Thank you for that, ${author}!`)
                         .setFooter({text:'If there is a problem with this, please report it!'});
 
-                    connection.query(
+                    await connection.run(
                         `UPDATE Submissions SET moderator = ?, points = points - ? WHERE msgId = ?;`,
                         [name, points, msgId]
                     );

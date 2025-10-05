@@ -63,32 +63,46 @@ module.exports = {
         try {
             //await interaction.deferReply();
             if(`718253204147798047` === interaction.guild.id) {
-                await client.erinCommands.get(interaction.commandName).execute(interaction, client);
+                await command.execute(interaction, client);
             }
             if(`359760149683896320` === interaction.guild.id) {
-                await client.slashCommands.get(interaction.commandName).execute(interaction, client);
+                await command.execute(interaction, client);
             }
         } catch (error) {
             console.error(error);
-            const embed = new Discord.EmbedBuilder()
-                .setColor(0x000000)
-                .setTitle('Oh no! An _error_ has appeared!')
-                .addFields({
-                    name: '**Error Name:**',
-                    value: `\`${error.name}\``
-                }, {
-                    name: '**Error Message:**',
-                    value: `\`${error.message}\``
-                }, {
-                    name: '**Error Location:**',
-                    value: `\`${error.stack}\``
-                }, {
-                    name: '**This has been reported!**',
-                    value: `I have pinged Erin so this has already been reported to her. You do not need to do anything else.`
-                })
-                .setTimestamp()
-                .setFooter({ text: `Thanks for using ${client.user.tag}! I'm sorry you encountered this error!`, icon_url: `${client.user.displayAvatarURL()}` });
-            interaction.reply({ content: `Hey, <@${o.id}>! You have an error!`, embeds: [embed] });
+            
+            // Only try to reply if the interaction hasn't been replied to or deferred
+            if (!interaction.replied && !interaction.deferred) {
+                try {
+                    // Truncate error messages to fit Discord's limits
+                    const errorName = error.name ? error.name.substring(0, 1000) : 'Unknown Error';
+                    const errorMessage = error.message ? error.message.substring(0, 1000) : 'No message available';
+                    const errorStack = error.stack ? error.stack.substring(0, 1000) + '...' : 'No stack trace available';
+                    
+                    const embed = new Discord.EmbedBuilder()
+                        .setColor(0x000000)
+                        .setTitle('Oh no! An _error_ has appeared!')
+                        .addFields({
+                            name: '**Error Name:**',
+                            value: `\`${errorName}\``
+                        }, {
+                            name: '**Error Message:**',
+                            value: `\`${errorMessage}\``
+                        }, {
+                            name: '**Error Location:**',
+                            value: `\`${errorStack}\``
+                        }, {
+                            name: '**This has been reported!**',
+                            value: `I have pinged Erin so this has already been reported to her. You do not need to do anything else.`
+                        })
+                        .setTimestamp()
+                        .setFooter({ text: `Thanks for using ${client.user.tag}! I'm sorry you encountered this error!`, icon_url: `${client.user.displayAvatarURL()}` });
+                    
+                    await interaction.reply({ content: `Hey, <@${o.id}>! You have an error!`, embeds: [embed] });
+                } catch (replyError) {
+                    console.error('Failed to send error message to user:', replyError);
+                }
+            }
         }
 
     }

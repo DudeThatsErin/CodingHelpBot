@@ -7,7 +7,7 @@ module.exports = {
     ownerOnly: 1,
     async execute(interaction) {
 
-        connection.query(`TRUNCATE TABLE Suggs;`);
+        await connection.run(`DELETE FROM Suggs;`);
         const fetchedChannel = interaction.guild.channels.cache.get(bot.suggestionsId);
         fetchedChannel.channel.bulkDelete(99, true);
 

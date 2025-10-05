@@ -1,11 +1,11 @@
 const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
+const { Routes } = require('discord.js');
 const bot = require('../../config/bot.json');
 const token = require('../../config/config.json').token;
 
 module.exports = {
   name: 'createcommands',
-  aliases: ['startslash', 'create-commands'],
+  aliases: ['startslash', 'create-commands', 'cc'],
   description: 'Allows Erin to create the Slash Commands.',
   ownerOnly: 1,
   execute(message) {
@@ -36,7 +36,5 @@ module.exports = {
             message.reply({content: `There was an error... ${error}`});
         }
     })();
-
-    message.reply({content: 'Created the commands!'});
   }
 }

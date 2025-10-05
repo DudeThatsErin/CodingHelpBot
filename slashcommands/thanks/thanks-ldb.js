@@ -13,12 +13,12 @@ module.exports = {
         let points = '';
 
 
-        const results = await connection.query(
+        const results = await connection.all(
             `SELECT * FROM Thanks WHERE user = ?;`,
             [author]
         );
 
-        const top10 = await connection.query(
+        const top10 = await connection.all(
             `SELECT user, SUM(CAST(thanks AS UNSIGNED)) AS total FROM Thanks GROUP BY user ORDER BY total DESC LIMIT 10;`
         );
 
@@ -36,7 +36,7 @@ module.exports = {
 
         if(top10 === undefined || top10[0] === undefined || top10[0][0] === undefined) {
             interaction.reply({content: 'No one is on the leaderboard yet.', ephemeral: true});
-        } else if(results === undefined || results[0] === undefined || results[0][0] === undefined) {
+        } else if(results === undefined || results[0] === undefined || results[0] === undefined) {
 
 
             let embed2 = new Discord.EmbedBuilder()
@@ -52,7 +52,7 @@ module.exports = {
             interaction.reply({ embeds: [embed2], ephemeral: true });
 
          } else {
-            const ponts = await connection.query(
+            const ponts = await connection.all(
                 `SELECT thanks, SUM(CAST(thanks AS UNSIGNED)) AS total FROM Thanks WHERE user = ?;`,
                 [author]
             );

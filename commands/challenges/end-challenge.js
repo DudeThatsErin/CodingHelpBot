@@ -10,15 +10,15 @@ module.exports = {
     challengeMods: 1,
     async execute (message, args) {
 
-            connection.query(
+            await connection.run(
                 `DELETE FROM Challenge WHERE guildId = ?;`,
                 [message.guild.id]
             );
-            connection.query(
+            await connection.run(
                 `DELETE FROM Challenges WHERE guildId = ?;`,
                 [message.guild.id]
             );
-            connection.query(
+            await connection.run(
                 `DELETE FROM Submissions WHERE guildId = ?;`,
                 [message.guild.id]
             );

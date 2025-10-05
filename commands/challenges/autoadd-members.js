@@ -21,7 +21,7 @@ module.exports = {
                 var Memberslength = Members.length;
                 for (var i = 0; i < Memberslength; i++) {
                     const members = Members[i];
-                    await connection.query(
+                    await connection.run(
                         `INSERT INTO Challenges (guildId, player) VALUES (?, ?);`,
                         [message.guild.id, members]
                     );

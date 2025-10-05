@@ -33,11 +33,11 @@ module.exports = {
                 `SELECT * FROM reports WHERE messageId = ?;`,
                 [msgId]
             );
-            const OG = results[0][0].authorId;
+            const OG = results[0].authorId;
             const author = client.users.cache.find(user => user.id === OG);
             const authorUsername = author.username;
-            const original = results[0][0].description;
-            const avatar = results[0][0].avatar;
+            const original = results[0].description;
+            const avatar = results[0].avatar;
 
             chnnel.messages.fetch(msgId).then(message => {
                 let report = new Discord.EmbedBuilder()
@@ -94,7 +94,7 @@ module.exports = {
 
             interaction.reply({content: 'I have marked the report as in progress and sent the user a DM.'});
 
-            await connection.query(
+            await connection.run(
                 `UPDATE reports SET moderator = ? AND stat = ? WHERE messageId = ?;`,
                 [bot.ownerId, description, msgId]
             );

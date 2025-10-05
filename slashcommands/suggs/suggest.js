@@ -40,7 +40,7 @@ module.exports = {
                 type: 'GUILD_PUBLIC_THREAD'
             });
             try {
-                await connection.query(
+                await connection.run(
                     `INSERT INTO Suggs (noSugg, Author, Message, Avatar, stat) VALUES(?, ?, ?, ?, ?)`,
                     [message.id, author, messageArgs, avatar, newStatus]
                 );

@@ -19,7 +19,7 @@ module.exports = {
         let dayNo = args[0];
         let answer = args.slice(1).join(' ') || 'only attachment submitted';
 
-        const result = await connection.query(
+        const result = await connection.all(
             `SELECT * FROM Submissions WHERE guildId = ?;`,
             [guildId]
         );
@@ -38,7 +38,7 @@ module.exports = {
                 return;
             } else {
                 if (message.attachments.size === 0) {
-                    connection.query(
+                    await connection.run(
                         `INSERT INTO Submissions (guildId, msgId, author, message, challengeNo, moderator, points) VALUES (?, ?, ?, ?, ?, ?, ?);`,
                         [guildId, msgId, author, answer, dayNo, 0, 0]
                     );
@@ -53,7 +53,7 @@ module.exports = {
                 }
                 message.attachments.forEach(async attachment => {
                     const url = attachment.url;
-                    connection.query(
+                    await connection.run(
                         `INSERT INTO Submissions (guildId, msgId, author, message, file, challengeNo, moderator, points) VALUES (?, ?, ?, ?, ?, ?, ?, ?);`,
                         [guildId, msgId, author, answer, url, dayNo, 0, 0]
                     );

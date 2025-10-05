@@ -30,17 +30,17 @@ module.exports = {
                             message.channel.send({content:'You need to include the message ID for the submission you would like to review. Without this I will not know which message to review.'});
                             return;
                         } else {
-                            connection.query(
+                            await connection.run(
                                 `UPDATE Submissions SET moderator = ? WHERE msgId = ? AND guildId = ?;`,
                                 [moderator, msgId, message.guild.id]
                             );
-                            const result = await connection.query(
+                            const result = await connection.all(
                                 `SELECT author FROM Submissions WHERE msgId = ? AND guildId = ?;`,
                                 [msgId, message.guild.id]
                             );
-                            let user = result[0][0].author;
+                            let user = result[0].author;
                             const Author = message.client.users.cache.get(user);
-                            connection.query(
+                            await connection.run(
                                 `UPDATE Submissions SET points = ? AND moderator = ? WHERE msgId = ?;`,
                                 [points, moderator, msgId]
                             );

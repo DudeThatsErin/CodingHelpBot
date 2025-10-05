@@ -166,14 +166,7 @@
         "description": "This allows users to find out more information on all of our commands.",
         "aliases": [],
         "usage": "/help or /help [command name here]",
-        "example": "/help or /help algorithm"
-      },
-      {
-        "name": "algorithm",
-        "description": "Get algorithm solutions and explanations for common problems.",
-        "aliases": [],
-        "usage": "/algorithm <problem>",
-        "example": "/algorithm sorting"
+        "example": "/help or /help ping"
       }
     ],
     "Admin Commands": [
@@ -183,6 +176,20 @@
         "aliases": [],
         "usage": "/bot-status <message>",
         "example": "/bot-status Fixed a bug in the help command"
+      },
+      {
+        "name": "enable-challenge-system",
+        "description": "Enables the challenge system and creates necessary database tables",
+        "aliases": [],
+        "usage": "/enable-challenge-system <announcements-channel> [prizes]",
+        "example": "/enable-challenge-system 123456789 Nitro"
+      },
+      {
+        "name": "disable-challenge-system", 
+        "description": "Disables the challenge system for this server",
+        "aliases": [],
+        "usage": "/disable-challenge-system",
+        "example": "/disable-challenge-system"
       },
       {
         "name": "disable-system",

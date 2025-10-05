@@ -9,7 +9,7 @@ module.exports = {
     usage: `${config.prefix}remove-user <tag user or ID>`,
     example: `${config.prefix}remove-user @DudeThatsErin`,
     challengeMods: 1,
-    execute (message, args) {
+    async execute (message, args) {
 
 
             const mmbr = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
@@ -24,7 +24,7 @@ module.exports = {
                         .setDescription(tag)
                         .setFooter({text:'If this is wrong, please report this.'});
                 message.channel.send({ embeds: [embed] });
-                   connection.query(
+                   await connection.run(
                         `DELETE FROM Challenges WHERE guildId = ? AND player = ?;`,
                         [message.guild.id, id]
                     );

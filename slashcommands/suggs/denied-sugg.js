@@ -26,7 +26,7 @@ module.exports = {
 
         const msgId = interaction.options.getString('messageid');
             try {
-                await connection.query(
+                await connection.all(
                     `SELECT noSugg from Suggs WHERE noSugg = ?;`,
                     [msgId]
                 );
@@ -36,7 +36,7 @@ module.exports = {
                 return;
             }
 
-        const result2 = await connection.query(
+        const result2 = await connection.all(
             `SELECT Author from Suggs WHERE noSugg = ?;`,
             [msgId],
         );
@@ -44,13 +44,13 @@ module.exports = {
         const aut = await interaction.guild.members.fetch(OGauthor);
         const name = aut.user.username;
 
-        const result3 = await connection.query(
+        const result3 = await connection.all(
             `SELECT Message from Suggs WHERE noSugg = ?;`,
             [msgId],
         );
         const suggestion = result3[0][0].Message;
 
-        const result4 = await connection.query(
+        const result4 = await connection.all(
             `SELECT Avatar from Suggs WHERE noSugg = ?;`,
             [msgId],
         );
@@ -58,18 +58,18 @@ module.exports = {
         const mod = interaction.user.id;
         const stats = interaction.options.getString('message');
 
-        connection.query(
+        await connection.run(
             `UPDATE Suggs SET stat = ?, Moderator = ? WHERE noSugg = ?;`,
             [stats, mod, msgId],
         );
 
-        const result8 = await connection.query(
+        const result8 = await connection.all(
             `SELECT stat FROM Suggs WHERE noSugg = ?;`,
             [msgId]
         );
         const upStatus = result8[0][0].stat;
 
-        const moderator = await connection.query(
+        const moderator = await connection.all(
             `SELECT Moderator FROM Suggs WHERE noSugg = ?;`,
             [msgId]
         );
@@ -89,7 +89,7 @@ module.exports = {
             interaction.client.users.cache.get(OGauthor).send({ embeds: [denied] });
             interaction.reply({text:`That has been denied and the suggestion has been deleted. 😃`});
                 try {
-                    await connection.query(
+                    await connection.run(
                         `DELETE FROM Suggs WHERE noSugg = ? AND Author = ?;`,
                         [msgId, OGauthor],
                     );

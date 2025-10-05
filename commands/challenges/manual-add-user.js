@@ -17,13 +17,13 @@ module.exports = {
         if (!mmbr) {
             message.reply({text:'You need to include a user ID or mention of the user you want to add to the database.'});
         } else {
-            const isAlreadyPlaying = await connection.query(
+            const isAlreadyPlaying = await connection.all(
                 `SELECT player FROM Challenges WHERE player = ? AND guildId = ?;`,
                 [mmbr.id, message.guild.id]
             );
             if (!isAlreadyPlaying[0][0]?.player) {
                 message.channel.send({ content: `I have added ${tag} to the database. 👍` });
-                connection.query(
+                await connection.run(
                     `INSERT INTO Challenges (guildId, player) VALUES (?, ?);`,
                     [message.guild.id, mmbr.id]
                 );

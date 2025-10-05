@@ -11,16 +11,16 @@ module.exports = {
 
         let msgId = args[0];
         if (!msgId) return message.reply({content:'You need to include the message ID for the message you want to remove points from.'});
-        const results = await connection.query(
+        const results = await connection.all(
             `SELECT * FROM Submissions WHERE msgId = ?;`,
             [msgId]
         );
-        if (results[0][0]?.moderator == undefined || results[0][0]?.moderator == 0 || results[0][0]?.moderator == null) return message.reply({text:'This message has not been reviewed yet. I can only mark submissions as unreviewed if they were already reviewed.'});
-        let player = results[0][0].author;
+        if (results[0]?.moderator == undefined || results[0]?.moderator == 0 || results[0]?.moderator == null) return message.reply({text:'This message has not been reviewed yet. I can only mark submissions as unreviewed if they were already reviewed.'});
+        let player = results[0].author;
         let playerID = client.users.cache.get(player) || await message.client.users.fetch(player).catch(err => { console.log(err); });
         let playerName = playerID.username;
 
-            connection.query(
+            await connection.run(
                 `UPDATE Submissions SET moderator = ?, points = ? WHERE msgId = ?;`,
                 [0, 0, msgId]
             );

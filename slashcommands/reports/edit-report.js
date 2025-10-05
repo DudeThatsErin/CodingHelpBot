@@ -32,11 +32,11 @@ module.exports = {
               `SELECT * FROM reports WHERE messageId = ?;`,
               [msgId]
           );
-          const OG = results[0][0].authorId;
+          const OG = results[0].authorId;
           const author = client.users.cache.find(user => user.id === OG);
           const authorUsername = author.username;
-          const original = results[0][0].description;
-          const avatar = results[0][0].avatar;
+          const original = results[0].description;
+          const avatar = results[0].avatar;
 
           chnnel.messages.fetch(msgId).then(message => {
               let report = new Discord.EmbedBuilder()
@@ -93,7 +93,7 @@ module.exports = {
 
           interaction.reply({content: 'I have updated the report for Erin, she has already received it. Thank you!', ephemeral: true});
 
-          await connection.query(
+          await connection.run(
               `UPDATE reports SET stat = ? WHERE messageId = ?;`,
               [description, msgId]
           );

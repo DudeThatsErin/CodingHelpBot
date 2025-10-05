@@ -25,11 +25,11 @@ module.exports = {
                 `SELECT * FROM reports WHERE messageId = ?;`,
                 [messageId]
             );
-            const OG = results[0][0].authorId;
+            const OG = results[0].authorId;
             const author = client.users.cache.find(user => user.id === OG);
             const authorUsername = author.username;
-            const original = results[0][0].description;
-            const avatar = results[0][0].avatar;
+            const original = results[0].description;
+            const avatar = results[0].avatar;
 
             let report = new Discord.EmbedBuilder()
                 .setColor(0x138D75)
@@ -44,7 +44,7 @@ module.exports = {
 
             (await client.users.cache.get(OG)).send({ embeds: [report] });
 
-            await connection.query(
+            await connection.run(
                 `DELETE FROM reports WHERE messageId = ?;`,
                 [messageId]
             );

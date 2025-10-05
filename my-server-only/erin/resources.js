@@ -21,7 +21,7 @@ module.exports = {
         },
         {
           name: 'IDEs',
-          value: `- [Visual Studio](https://visualstudio.microsoft.com/)\n- [Eclipse](http://www.eclipse.org/downloads/)\n- [Code::Blocks](http://www.codeblocks.org/)\n- [PHPStorm](https://www.jetbrains.com/phpstorm/)\n- [PyCharm](https://www.jetbrains.com/pycharm/)\n- [VSCodium](https://vscodium.com/)\n- [VSCode](https://code.visualstudio.com/)`,
+          value: `- [Visual Studio](https://visualstudio.microsoft.com/)\n- [Eclipse](http://www.eclipse.org/downloads/)\n- [Code::Blocks](http://www.codeblocks.org/)\n- [PHPStorm](https://www.jetbrains.com/phpstorm/)\n- [PyCharm](https://www.jetbrains.com/pycharm/)\n- [VSCodium](https://vscodium.com/)\n- [VSCode](https://code.visualstudio.com/)\n- [Cursor](https://cursor.sh/)\n- [Windsurf](https://codeium.com/windsurf)`,
           inline: false
         },
         {
@@ -42,7 +42,7 @@ module.exports = {
       )
       .setFooter({ text: 'This was last updated on 1-14-2022 @ 7:00pm', icon_url: ee.footericon });
 
-      const fetchedChannel = interaction.guild.channels.cache.get(bot.announcementsId); // test bot: 1014995248163852298
+      const fetchedChannel = interaction.guild.channels.cache.get('918527517999108107'); // test bot: 1014995248163852298
       fetchedChannel.send({ embeds: [docs], components: [
         {
           type: 1,
@@ -51,13 +51,13 @@ module.exports = {
               type: 2,
               style: 5,
               label: 'View more useful links',
-              url: `https://codinghelp.site/`
+              url: `https://codinghelp-wiki.vercel.app/`
             }
           ]
         }
       ] });
 
-      interaction.reply({content: `I have done it, please check ${fetchedChannel}!`, ephemeral: true});
+      interaction.reply({content: `I have done it, please check ${fetchedChannel}!`, flags: Discord.MessageFlags.Ephemeral});
 
   }
 }

@@ -18,12 +18,12 @@ module.exports = {
         let author = message.author.username;
         let a = message.author.id;
 
-        const results2 = await connection.query(
+        const results2 = await connection.all(
             `SELECT * FROM Submissions WHERE msgId = ?;`,
             [msgId]
         );
         let athor = results2[0][0].author;
-        let reviewed = results[0][0].moderator;
+        let reviewed = results[0].moderator;
 
         if (!msgId) {
             message.delete();
@@ -43,7 +43,7 @@ module.exports = {
                 message.attachments.forEach(async attachment => {
                     const url = attachment.url;
 
-                    connection.query(
+                    await connection.run(
                         `UPDATE Submissions SET msgId = ?, Message = ?, file = ? WHERE msgId = ?;`,
                         [msg, url, title, msgId]
                     );

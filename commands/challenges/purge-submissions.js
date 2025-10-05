@@ -10,7 +10,7 @@ module.exports = {
     ownerOnly: 1,
     async execute (message, args) {
 
-            connection.query(
+            await connection.run(
                 `DELETE FROM Submissions WHERE guildId = ?;`,
                 [message.guild.id]
             );

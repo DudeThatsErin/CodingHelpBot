@@ -19,7 +19,7 @@ module.exports = {
     const mention = interaction.options.getUser('user');
     const user = mention.id;
 
-    await connection.query(
+    await connection.run(
       `DELETE FROM Thanks WHERE user = ? ORDER BY rowNo desc limit 1;`,
       [user]
     );
