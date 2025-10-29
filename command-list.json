@@ -412,6 +412,78 @@
         "usage": "/rules @username or user ID rule number[1-5] or /rules @username or ID all",
         "example": "/rules @DudeThatsErin#8736 4 or /rules @DudeThatsErin#8736 all"
       }
+    ],
+    "Utility Commands": [
+      {
+        "name": "afk",
+        "description": "Set yourself as AFK with an optional message and duration. Your nickname will show (AFK) while away.",
+        "aliases": [],
+        "usage": "/afk [message] [duration]",
+        "example": "/afk \"Working on a project\" 2h"
+      },
+      {
+        "name": "afk-remove",
+        "description": "Manually remove your AFK status and restore your nickname.",
+        "aliases": [],
+        "usage": "/afk-remove",
+        "example": "/afk-remove"
+      },
+      {
+        "name": "about",
+        "description": "Shows information about the bot including version and features.",
+        "aliases": [],
+        "usage": "/about",
+        "example": "/about"
+      },
+      {
+        "name": "avatar",
+        "description": "Shows a user's avatar in full size.",
+        "aliases": [],
+        "usage": "/avatar [user]",
+        "example": "/avatar @DudeThatsErin"
+      },
+      {
+        "name": "flip",
+        "description": "Flips a coin and returns heads or tails.",
+        "aliases": [],
+        "usage": "/flip",
+        "example": "/flip"
+      },
+      {
+        "name": "invite",
+        "description": "Get an invite link to add this bot to your server.",
+        "aliases": [],
+        "usage": "/invite",
+        "example": "/invite"
+      },
+      {
+        "name": "ping",
+        "description": "Shows the bot's latency and API response time.",
+        "aliases": [],
+        "usage": "/ping",
+        "example": "/ping"
+      },
+      {
+        "name": "reddit",
+        "description": "Get a link to the r/CodingHelp subreddit.",
+        "aliases": [],
+        "usage": "/reddit",
+        "example": "/reddit"
+      },
+      {
+        "name": "tech",
+        "description": "Shows the technology stack used by this bot.",
+        "aliases": [],
+        "usage": "/tech",
+        "example": "/tech"
+      },
+      {
+        "name": "wiki",
+        "description": "Get a link to the CodingHelp documentation and wiki.",
+        "aliases": [],
+        "usage": "/wiki",
+        "example": "/wiki"
+      }
     ]
   }
 }
