@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags } = require('discord.js');
 const config = require('../../config/config.json');
 
 module.exports = {
@@ -7,17 +7,17 @@ module.exports = {
   usage: `${config.prefix}dm <@username>`,
   example: `${config.prefix}dm @DudeThatsErin`,
   modOnly: 1,
-  execute(message, args) {
+  async execute(message, args) {
 
     const row = new ActionRowBuilder()
     .addComponents(
       new ButtonBuilder()
         .setLabel('Our Website')
-        .setStyle(5)
+        .setStyle(ButtonStyle.Link)
         .setURL('https://codinghelp.site'),
       new ButtonBuilder()
         .setLabel('Our Subreddit')
-        .setStyle(5)
+        .setStyle(ButtonStyle.Link)
         .setURL('https://reddit.com/r/CodingHelp')
     );
 
@@ -44,7 +44,10 @@ module.exports = {
             icon_url: 'https://imgur.com/U6cwQxj.png'
           }
         }
-        user.send({ content: `Hey, ${user.username}!`, embeds: [dm], components: [row] });
+        // Send content, embed, and components separately
+        await user.send({ content: `Hey, ${user.username}!` });
+        await user.send({ embeds: [dm] });
+        await user.send({ components: [row] });
         message.react('👍');
       }
     } else {
@@ -64,7 +67,10 @@ module.exports = {
         }
       }
       const user = message.mentions.repliedUser;
-      user.send({ content: `Hey, ${user.username}!`, embeds: [dm], components: [row] });
+      // Send content, embed, and components separately
+      await user.send({ content: `Hey, ${user.username}!` });
+      await user.send({ embeds: [dm] });
+      await user.send({ components: [row] });
       message.react('👍');
     }
   },

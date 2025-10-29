@@ -1,4 +1,4 @@
-const Discord = require('discord.js');
+const { MessageFlags, EmbedBuilder, Collection } = require('discord.js');
 const o = require('../config/owner.json');
 
 module.exports = {
@@ -7,12 +7,12 @@ module.exports = {
         if (interaction.isMessageComponent()) return;
 
         const command = client.slashCommands.get(interaction.commandName) || client.erinCommands.get(interaction.commandName);
-        if (!command) return interaction.reply({ content: 'This command no longer exists.', ephemeral: true });
+        if (!command) return interaction.reply({ content: 'This command no longer exists.', flags: MessageFlags.Ephemeral });
 
         // owner only
         if (command.ownerOnly === 1) {
             if (interaction.user.id != o.id) {
-                return interaction.reply({ content: `This is only a command Erin (<@${o.username}>) can use. If you are seeing this in error use the \`/report\` command.`, ephemeral: true });
+                return interaction.reply({ content: `This is only a command Erin (<@${o.username}>) can use. If you are seeing this in error use the \`/report\` command.`, flags: MessageFlags.Ephemeral });
             }
         }
 
@@ -26,7 +26,7 @@ module.exports = {
                 }
 
                 if (value == modRoles.length) {
-                    return interaction.reply({ content: `This is a command only moderators can use. You do not have the required permissions. Moderators have the \`@Moderator\` role or \`@&Junior Mod\` roles. Please run \`/report [issue]\` if you are seeing this in error.`, ephemeral: true });
+                    return interaction.reply({ content: `This is a command only moderators can use. You do not have the required permissions. Moderators have the \`@Moderator\` role or \`@&Junior Mod\` roles. Please run \`/report [issue]\` if you are seeing this in error.`, flags: MessageFlags.Ephemeral });
                 }
             }
         }
@@ -35,13 +35,13 @@ module.exports = {
         const botspam = `433962402292432896`;
         if (command.botSpamOnly === 1) {
             if (interaction.channel.id != botspam) {
-                return interaction.reply({ content: `Please only use this command in the <#${botspam}> channel. This command cannot be used elsewhere. Thank you.`, ephemeral: true })
+                return interaction.reply({ content: `Please only use this command in the <#${botspam}> channel. This command cannot be used elsewhere. Thank you.`, flags: MessageFlags.Ephemeral })
             }
         }
 
         // command cooldowns
         if (!client.slashCooldowns.has(interaction.commandName)) {
-            client.slashCooldowns.set(interaction.commandName, new Discord.Collection());
+            client.slashCooldowns.set(interaction.commandName, new Collection());
         }
 
         const now = Date.now();
@@ -52,7 +52,7 @@ module.exports = {
 
             if (now < expirationTime) {
                 const timeLeft = (expirationTime - now) / 1000;
-                return interaction.reply({ content: `Please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`, ephemeral: true });
+                return interaction.reply({ content: `Please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`, flags: MessageFlags.Ephemeral });
             }
         }
 
@@ -79,7 +79,7 @@ module.exports = {
                     const errorMessage = error.message ? error.message.substring(0, 1000) : 'No message available';
                     const errorStack = error.stack ? error.stack.substring(0, 1000) + '...' : 'No stack trace available';
                     
-                    const embed = new Discord.EmbedBuilder()
+                    const embed = new EmbedBuilder()
                         .setColor(0x000000)
                         .setTitle('Oh no! An _error_ has appeared!')
                         .addFields({
@@ -98,7 +98,9 @@ module.exports = {
                         .setTimestamp()
                         .setFooter({ text: `Thanks for using ${client.user.tag}! I'm sorry you encountered this error!`, icon_url: `${client.user.displayAvatarURL()}` });
                     
-                    await interaction.reply({ content: `Hey, <@${o.id}>! You have an error!`, embeds: [embed] });
+                    // Send content and embed separately
+                    await interaction.reply({ content: `Hey, <@${o.id}>! You have an error!` });
+                    await interaction.followUp({ embeds: [embed] });
                 } catch (replyError) {
                     console.error('Failed to send error message to user:', replyError);
                 }

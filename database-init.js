@@ -82,6 +82,19 @@ const schemas = {
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             UNIQUE(guildId, system_name)
         )
+    `,
+    afk: `
+        CREATE TABLE IF NOT EXISTS AFK (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            userId TEXT NOT NULL,
+            guildId TEXT NOT NULL,
+            channelId TEXT NOT NULL,
+            message TEXT NOT NULL,
+            timestamp INTEGER NOT NULL,
+            expiresAt INTEGER,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE(userId, guildId)
+        )
     `
 };
 
@@ -92,6 +105,7 @@ async function initializeCoreTables() {
         await connection.run(schemas.reports);
         await connection.run(schemas.thanks);
         await connection.run(schemas.systems);
+        await connection.run(schemas.afk);
         console.log('✅ Core database tables initialized');
     } catch (error) {
         console.error('❌ Error initializing core tables:', error);
@@ -174,11 +188,82 @@ async function getChallengeConfig(guildId) {
     }
 }
 
+// AFK Database Functions
+async function setAFK(userId, guildId, channelId, message, timestamp, expiresAt = null) {
+    try {
+        await connection.run(
+            `INSERT OR REPLACE INTO AFK (userId, guildId, channelId, message, timestamp, expiresAt) VALUES (?, ?, ?, ?, ?, ?)`,
+            [userId, guildId, channelId, message, timestamp, expiresAt]
+        );
+        return true;
+    } catch (error) {
+        console.error('Error setting AFK in database:', error);
+        return false;
+    }
+}
+
+async function getAFK(userId, guildId) {
+    try {
+        const result = await connection.get(
+            `SELECT * FROM AFK WHERE userId = ? AND guildId = ?`,
+            [userId, guildId]
+        );
+        return result || null;
+    } catch (error) {
+        console.error('Error getting AFK from database:', error);
+        return null;
+    }
+}
+
+async function removeAFK(userId, guildId) {
+    try {
+        const result = await connection.run(
+            `DELETE FROM AFK WHERE userId = ? AND guildId = ?`,
+            [userId, guildId]
+        );
+        return result.changes > 0;
+    } catch (error) {
+        console.error('Error removing AFK from database:', error);
+        return false;
+    }
+}
+
+async function getAllActiveAFK() {
+    try {
+        const result = await connection.all(
+            `SELECT * FROM AFK`
+        );
+        return result || [];
+    } catch (error) {
+        console.error('Error getting all AFK from database:', error);
+        return [];
+    }
+}
+
+async function getExpiredAFK() {
+    try {
+        const now = Date.now();
+        const result = await connection.all(
+            `SELECT * FROM AFK WHERE expiresAt IS NOT NULL AND expiresAt <= ?`,
+            [now]
+        );
+        return result || [];
+    } catch (error) {
+        console.error('Error getting expired AFK from database:', error);
+        return [];
+    }
+}
+
 module.exports = {
     initializeCoreTables,
     initializeChallengeTables,
     isSystemEnabled,
     enableSystem,
     disableSystem,
-    getChallengeConfig
+    getChallengeConfig,
+    setAFK,
+    getAFK,
+    removeAFK,
+    getAllActiveAFK,
+    getExpiredAFK
 };

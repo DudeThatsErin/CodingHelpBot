@@ -18,11 +18,11 @@ module.exports = {
       .addComponents(
         new ButtonBuilder()
           .setLabel('Our Website')
-          .setStyle(5)
+          .setStyle(ButtonStyle.Link)
           .setURL('https://codinghelp.site'),
         new ButtonBuilder()
           .setLabel('Our Subreddit')
-          .setStyle(5)
+          .setStyle(ButtonStyle.Link)
           .setURL('https://reddit.com/r/CodingHelp')
       );
 

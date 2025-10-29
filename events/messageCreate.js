@@ -1,6 +1,7 @@
 const config = require('../config/config.json');
 const me = require('../config/owner.json');
 const Discord = require('discord.js');
+const { EmbedBuilder, ButtonStyle } = require('discord.js');
 const connection = require('../database.js')
 
 module.exports = {
@@ -17,6 +18,69 @@ module.exports = {
         if (message.author.bot) {
             //console.log('bot message');
             return;
+        }
+
+        // AFK System - Handle user returning from AFK
+        const isAFK = await client.afkManager.isUserAFK(message.author.id, message.guild.id);
+        if (isAFK) {
+            await client.afkManager.removeUserAFK(message.author.id, message.guild.id);
+            
+            // Remove (AFK) from nickname
+            try {
+                const member = await message.guild.members.fetch(message.author.id);
+                const currentNick = member.displayName;
+                
+                // Remove (AFK) if it's there
+                if (currentNick.endsWith(' (AFK)')) {
+                    const newNick = currentNick.replace(' (AFK)', '');
+                    await member.setNickname(newNick === member.user.username ? null : newNick);
+                }
+            } catch (error) {
+                if (error.code === 50013) {
+                    console.log(`Cannot update nickname for ${message.author.tag}: Missing permissions (role hierarchy)`);
+                } else {
+                    console.error('Error updating nickname after AFK removal:', error);
+                }
+                // Continue even if nickname update fails
+            }
+            
+            const welcomeBackMessage = await message.reply('👋 Welcome back! Your AFK status has been removed.');
+            
+            // Delete welcome back message after 5 seconds
+            setTimeout(() => {
+                welcomeBackMessage.delete().catch(() => {});
+            }, 5000);
+        }
+
+        // AFK System - Handle mentions of AFK users
+        if (message.mentions.users.size > 0) {
+            const allAFKUsers = await client.afkManager.getAllAFKUsers();
+            
+            for (const afkData of allAFKUsers) {
+                if (message.mentions.users.has(afkData.userId) && afkData.userId !== message.author.id && afkData.guildId === message.guild.id) {
+                    const afkUser = message.mentions.users.get(afkData.userId);
+                    const timeSince = Math.floor((Date.now() - afkData.timestamp) / 1000 / 60);
+                    
+                    let timeText = '';
+                    if (timeSince < 1) {
+                        timeText = 'just now';
+                    } else if (timeSince < 60) {
+                        timeText = `${timeSince} minute${timeSince !== 1 ? 's' : ''} ago`;
+                    } else {
+                        const hours = Math.floor(timeSince / 60);
+                        timeText = `${hours} hour${hours !== 1 ? 's' : ''} ago`;
+                    }
+                    
+                    const afkReply = await message.reply(`💤 **${afkUser.displayName}** is currently AFK (${timeText}): ${afkData.message}`);
+                    
+                    // Delete AFK reply after 5 seconds
+                    setTimeout(() => {
+                        afkReply.delete().catch(() => {});
+                    }, 5000);
+                    
+                    break; // Only respond once per message even if multiple AFK users are mentioned
+                }
+            }
         };
         if (!message.content.startsWith(config.prefix)) {
             //console.log('does not start with prefix.');
@@ -135,18 +199,18 @@ module.exports = {
                 .addComponents(
                     new Discord.ButtonBuilder()
                         .setLabel('Erin\'s Support Server')
-                        .setStyle(5)
+                        .setStyle(ButtonStyle.Link)
                         .setURL('https://discord.gg/tT3VEW8AYF'),
                     new Discord.ButtonBuilder()
                         .setLabel('Fill out this form!')
-                        .setStyle(5)
+                        .setStyle(ButtonStyle.Link)
                         .setURL('https://dudethatserin.com')
                 )
-            const embed = {
-                color: 0xAA2C2C,
-                title: 'Oh no! An _error_ has appeared!',
-                description: `**Contact Bot Owner:** <@${me.id}>`,
-                fields: [
+            const embed = new EmbedBuilder()
+                .setColor(0xAA2C2C)
+                .setTitle('Oh no! An _error_ has appeared!')
+                .setDescription(`**Contact Bot Owner:** <@${me.id}>`)
+                .addFields([
                     {
                         name: '**Error Name:**',
                         value: `\`${error.name}\``
@@ -157,13 +221,12 @@ module.exports = {
                         name: '**Ways to Report:**',
                         value: `Run the \`${config.prefix}report\` command, Message Erin on Discord, or use one of the links below.\n\nPlease include all of the information in this embed (message) as well as any additional information you can think to provide. Screenshots are also VERY helpful. Thank you!`
                     }
-                ],
-                timestamp: new Date(),
-                footer: {
+                ])
+                .setTimestamp()
+                .setFooter({
                     text: `Thanks for using ${client.user.tag}! I'm sorry you encountered this error!`,
-                    icon_url: `${client.user.displayAvatarURL()}`
-                }
-            };
+                    iconURL: `${client.user.displayAvatarURL()}`
+                });
             message.channel.send({ embeds: [embed], components: [row] });
         }
     }

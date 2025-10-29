@@ -1,5 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require("discord.js");
-const ee = require('../config/embed.json');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags } = require("discord.js");
 const commandList = require('../command-list.json');
 
 module.exports = {
@@ -15,67 +14,30 @@ module.exports = {
 	],
 	usage: '/help or /help [command name here]',
 	async execute(interaction, client) {
-		const roleColor = 0x008080;
-
-		const row = new ActionRowBuilder()
+		const buttonRow = new ActionRowBuilder()
     .addComponents(
       new ButtonBuilder()
         .setLabel('Our Website')
-        .setStyle(5)
+        .setStyle(ButtonStyle.Link)
         .setURL('https://codinghelp-wiki.vercel.app'),
       new ButtonBuilder()
         .setLabel('Our Subreddit')
-        .setStyle(5)
-        .setURL('https://reddit.com/r/CodingHelp')
+        .setStyle(ButtonStyle.Link)
+        .setURL('https://reddit.com/r/CodingHelp'),
+      new ButtonBuilder()
+        .setLabel('GitHub Repo')
+        .setStyle(ButtonStyle.Link)
+        .setURL('https://github.com/dudethatserin/codinghelp-bot/'),
+      new ButtonBuilder()
+        .setLabel('Discord Invite')
+        .setStyle(ButtonStyle.Link)
+        .setURL('https://discord.gg/geQEUBm')
     );
 
-		// Function to create command list string from commands array
-		const createCommandListString = (commands) => {
-			return commands.map(cmd => cmd.name).join('\n');
-		};
-
-		// Create fields for the main help embed
-		const fields = [];
-
-		// Add prefix commands
-		if (commandList.prefix_commands) {
-			Object.keys(commandList.prefix_commands).forEach(category => {
-				const commands = commandList.prefix_commands[category];
-				if (commands && commands.length > 0) {
-					fields.push({
-						name: `${category} (Prefix Commands)`,
-						value: `\`\`\`css\n${createCommandListString(commands)}\`\`\``,
-						inline: true
-					});
-				}
-			});
-		}
-
-		// Add slash commands
-		if (commandList.slash_commands) {
-			Object.keys(commandList.slash_commands).forEach(category => {
-				const commands = commandList.slash_commands[category];
-				if (commands && commands.length > 0) {
-					fields.push({
-						name: `${category} (Slash Commands)`,
-						value: `\`\`\`css\n${createCommandListString(commands)}\`\`\``,
-						inline: true
-					});
-				}
-			});
-		}
-
-		const mainEmbed = new EmbedBuilder()
-			.setColor(roleColor)
-			.setTitle('CodingHelp Bot - All Commands')
-			.setDescription('These are all of the commands r/CodingHelp can do. If you want to get more information you can do `/help <command>`.')
-			.addFields(fields)
-			.setFooter({ text: ee.footertext, iconURL: ee.footericon });
-
-		let cmdd = interaction.options.getString('commandname');
+		const cmdd = interaction.options.getString('commandname');
 
 		if (cmdd) {
-			// Search for specific command in the command list JSON
+			// Search for specific command
 			let foundCommand = null;
 			
 			// Search in prefix commands
@@ -100,39 +62,70 @@ module.exports = {
 			}
 
 			if (!foundCommand) {
-				return interaction.reply({ content: "That command could not be found!", ephemeral: true });
+				return interaction.reply({ content: "❌ **Command Not Found**\n\nThat command could not be found! Use `/help` to see all available commands.", ephemeral: true });
 			}
 
-			const emb = new EmbedBuilder()
-				.setColor(roleColor)
-				.setTitle(`Help for \`${foundCommand.name}\``);
+			// Create rich content for specific command help
+			let content = `# Help for \`${foundCommand.name}\`\n\n`;
 			
 			if (foundCommand.description) {
-				emb.setDescription(foundCommand.description);
-			} else {
-				emb.setDescription("No description could be found");
+				content += `${foundCommand.description}\n\n`;
 			}
 			
 			if (foundCommand.aliases && Array.isArray(foundCommand.aliases) && foundCommand.aliases.length > 0) {
-				emb.addFields({name: "Aliases", value: foundCommand.aliases.join(", ")});
+				content += `**Aliases:** ${foundCommand.aliases.map(alias => `\`${alias}\``).join(', ')}\n\n`;
 			}
 			
 			if (foundCommand.usage) {
-				emb.addFields({name: "Usage", value: foundCommand.usage});
+				content += `**Usage:** ${foundCommand.usage}\n\n`;
 			}
 			
 			if (foundCommand.example) {
-				emb.addFields({name: "Example Usage", value: foundCommand.example});
+				content += `**Example:** ${foundCommand.example}\n\n`;
 			}
 			
-			emb.addFields({name: 'You can also view all of our commands on our website:', value: 'https://codinghelp-wiki.vercel.app'});
-			emb.setFooter({ text: ee.footertext, iconURL: ee.footericon });
+			content += `## Useful Links\nView all commands on our [website](https://codinghelp-wiki.vercel.app)!`;
 
-			interaction.reply({ embeds: [emb], components: [row], ephemeral: true });
+			await interaction.reply({ 
+				content: content, 
+				components: [buttonRow], 
+				flags: MessageFlags.Ephemeral 
+			});
 
 		} else {
-			// Show all commands in a single embed
-			interaction.reply({ embeds: [mainEmbed], components: [row], ephemeral: true });
+			// Show all commands overview
+			let content = `# CodingHelp Bot - All Commands\n\n`;
+			content += `These are all of the commands r/CodingHelp can do. If you want to get more information you can do \`/help <command>\`.\n\n`;
+
+			// Add prefix commands
+			if (commandList.prefix_commands) {
+				Object.keys(commandList.prefix_commands).forEach(category => {
+					const commands = commandList.prefix_commands[category];
+					if (commands && commands.length > 0) {
+						content += `## ${category} (Prefix Commands)\n`;
+						content += `\`\`\`\n${commands.map(cmd => cmd.name).join('\n')}\`\`\`\n\n`;
+					}
+				});
+			}
+
+			// Add slash commands
+			if (commandList.slash_commands) {
+				Object.keys(commandList.slash_commands).forEach(category => {
+					const commands = commandList.slash_commands[category];
+					if (commands && commands.length > 0) {
+						content += `## ${category} (Slash Commands)\n`;
+						content += `\`\`\`\n${commands.map(cmd => cmd.name).join('\n')}\`\`\`\n\n`;
+					}
+				});
+			}
+
+			content += `## Useful Links\nView detailed command documentation on our [website](https://codinghelp-wiki.vercel.app)!`;
+
+			await interaction.reply({ 
+				content: content, 
+				components: [buttonRow], 
+				flags: MessageFlags.Ephemeral 
+			});
 		}
 	},
 };
