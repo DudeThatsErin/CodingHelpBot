@@ -22,21 +22,22 @@ module.exports = {
             `SELECT user, SUM(CAST(thanks AS UNSIGNED)) AS total FROM Thanks GROUP BY user ORDER BY total DESC LIMIT 10;`
         );
 
-        for (let i = 0; i < top10[0].length; i++) {
-            const data = top10[0];
-            const user = data[i].user;
+        if(top10 === undefined || top10.length === 0) {
+            return interaction.reply({content: 'No one is on the leaderboard yet.', ephemeral: true});
+        }
+
+        for (let i = 0; i < top10.length; i++) {
+            const user = top10[i].user;
             let membr = await client.users.fetch(user).catch(err => {console.log(err);});
-            let username = membr.username;
+            let username = membr ? membr.username : user;
 
             userNames += `${i + 1}. ${username}\n`;
-            points += `${data[i].total}\n`;
+            points += `${top10[i].total}\n`;
 
         }
 
 
-        if(top10 === undefined || top10[0] === undefined || top10[0][0] === undefined) {
-            interaction.reply({content: 'No one is on the leaderboard yet.', ephemeral: true});
-        } else if(results === undefined || results[0] === undefined || results[0] === undefined) {
+        if(results === undefined || results.length === 0) {
 
 
             let embed2 = new Discord.EmbedBuilder()
@@ -56,7 +57,7 @@ module.exports = {
                 `SELECT thanks, SUM(CAST(thanks AS UNSIGNED)) AS total FROM Thanks WHERE user = ?;`,
                 [author]
             );
-            const p = ponts[0][0].total;
+            const p = ponts && ponts.length > 0 ? ponts[0].total : 0;
             let embed2 = new Discord.EmbedBuilder()
                 .setTitle('This is the current thanks leaderboard.')
                 .setColor(0xc9ca66)
