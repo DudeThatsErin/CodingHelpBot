@@ -3,8 +3,42 @@
   USING DISCORD.JS V14.6.0
 */
 const fs = require('fs');
-const { Client, GatewayIntentBits, Partials, Collection } = require('discord.js');
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessages ], partials: [Partials.Channel] });
+const { Client, GatewayIntentBits, Partials, Collection, Options } = require('discord.js');
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMembers,        // member joins/leaves/updates (privileged)
+    GatewayIntentBits.GuildModeration,     // ban/unban events
+    GatewayIntentBits.GuildVoiceStates,    // voice channel activity
+    GatewayIntentBits.GuildExpressions,    // emoji/sticker changes
+    GatewayIntentBits.GuildWebhooks,       // webhook create/update/delete
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,      // message edit/delete content (privileged)
+    GatewayIntentBits.DirectMessages,
+  ],
+  partials: [Partials.Channel, Partials.Message, Partials.GuildMember, Partials.User],
+  // Cap the caches that grow unbounded on a large server. Anything not listed keeps its default.
+  makeCache: Options.cacheWithLimits({
+    ...Options.DefaultMakeCacheSettings,
+    MessageManager: 100,                   // cached messages per channel (default 200)
+    GuildMemberManager: {                  // don't hold every member of a 21k+ server in RAM
+      maxSize: 200,
+      keepOverLimit: member => member.id === member.client.user.id,
+    },
+    UserManager: {
+      maxSize: 200,
+      keepOverLimit: user => user.id === user.client.user.id,
+    },
+    PresenceManager: 0,                    // presences aren't used (no GuildPresences intent)
+  }),
+  // Periodically evict stale entries so caches don't creep up over days of uptime.
+  sweepers: {
+    ...Options.DefaultSweeperSettings,
+    messages: { interval: 3600, lifetime: 10800 },                                    // drop messages older than 3h, hourly
+    users: { interval: 3600, filter: () => user => user.id !== user.client.user.id }, // keep only the bot long-term
+    guildMembers: { interval: 3600, filter: () => member => member.id !== member.client.user.id },
+  },
+});
 
 
 // configurations
@@ -23,7 +57,6 @@ initializeCoreTables();
 
 
 // for all commands
-let data = [];
 function readFilesFromPath(pathString) {
   const directoryEntries = fs.readdirSync(pathString, { withFileTypes: true });
 
@@ -70,13 +103,6 @@ const commandFilePaths1 = readFilesFromPath('./slashcommands');
 commandFilePaths1.forEach((filePath) => {
   const cmd = require(filePath);
 
-  let object = {};
-  if (cmd.name) { object.name = cmd.name; }
-  if (cmd.description) { object.description = cmd.description; }
-  if (cmd.options) { object.options = cmd.options; }
-
-  data.push(object);
-  //client.commands.delete(cmd.name, cmd);
   client.slashCommands.set(cmd.name, cmd);
   console.log(cmd.name + ' loaded successfully!');
 });
@@ -90,13 +116,7 @@ const commandFilePaths2 = readFilesFromPath('./my-server-only');
 
 commandFilePaths2.forEach((filePath) => {
   const cmdd = require(filePath);
-  let object = {};
-  if (cmdd.name) { object.name = cmdd.name; }
-  if (cmdd.description) { object.description = cmdd.description; }
-  if (cmdd.options) { object.options = cmdd.options; }
 
-  data.push(object);
-  //client.erinCommands.delete(cmd.name, cmd);
   client.erinCommands.set(cmdd.name, cmdd);
   // CHANGE THIS TO slashCommands ON TEST BOT.
   console.log(cmdd.name + ' loaded successfully!');

@@ -1,4 +1,5 @@
 const { EmbedBuilder, MessageFlags } = require('discord.js');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'afk-remove',
@@ -39,7 +40,7 @@ module.exports = {
         }
         
         const embed = new EmbedBuilder()
-            .setColor(0x00FF00)
+            .setColor(COLORS.green)
             .setTitle('✅ AFK Status Removed')
             .setDescription('Your AFK status has been manually removed.')
             .setTimestamp();

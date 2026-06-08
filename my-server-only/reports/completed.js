@@ -1,6 +1,7 @@
 const connection = require('../../database.js');
 const Discord = require('discord.js');
 const bot = require('../../config/bot.json')
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'completedreport',
@@ -41,7 +42,7 @@ module.exports = {
             const avatar = results[0].avatar;
 
             let report = new Discord.EmbedBuilder()
-                .setColor(0x138D75)
+                .setColor(COLORS.green)
                 .setTitle(`Your bug has been fixed!`)
                 .setAuthor({name: authorUsername, iconURL: avatar})
                 .setDescription(`**This is the original report:**\n${original}\n\n**This is the current status:**\n${description}\n\n`)

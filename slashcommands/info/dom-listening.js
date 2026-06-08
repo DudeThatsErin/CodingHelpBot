@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'dom-listening',
@@ -6,7 +7,7 @@ module.exports = {
     description: 'Sends information about why not to use dom listening attributes/properties.',
     execute(interaction) {
         const embed = new Discord.EmbedBuilder()
-            .setColor(0xEC4E49)
+            .setColor(COLORS.orange)
             .setTitle('Never use the \`on*\` DOM attributes/properties.')
             .addFields(
                 {

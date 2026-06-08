@@ -1,5 +1,6 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags } = require('discord.js');
 const config = require('../../config/config.json');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
   name: 'dm',
@@ -32,7 +33,7 @@ module.exports = {
         const saying = args.slice(1).join(' ')
 
         const dm = {
-          color: 0x1e1b49,
+          color: COLORS.blurple,
           title: `You received a DM from r/CodingHelp`,
           thumbnail: {
             url: 'https://imgur.com/U6cwQxj.png'
@@ -54,7 +55,7 @@ module.exports = {
       const saying = args.slice(0).join(' ');
 
       const dm = {
-        color: 0x1e1b49,
+        color: COLORS.blurple,
         title: `You received a DM from r/CodingHelp`,
         thumbnail: {
           url: 'https://imgur.com/U6cwQxj.png'

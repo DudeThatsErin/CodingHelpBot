@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const connection = require('../../database.js');
 const config = require('../../config/config.json');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'edit-submission',
@@ -51,7 +52,7 @@ module.exports = {
                     let au = message.author.id;
 
                     let embed = new Discord.EmbedBuilder()
-                        .setColor(0xc9a066)
+                        .setColor(COLORS.yellow)
                         .setTitle(`I have updated your submission, Thanks ${author}!`)
                         .setDescription(`I have updated your submission to:\n${newAnswer}\n\nYour new message ID is:\n\`${msg}\``)
                         .setFooter({text:'If there is a problem with this, please report it!'});

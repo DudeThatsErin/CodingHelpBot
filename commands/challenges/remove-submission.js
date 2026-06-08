@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const connection = require('../../database.js');
 const config = require('../../config/config.json');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'remove-submissions',
@@ -30,7 +31,7 @@ module.exports = {
                     const dayNo = results[0].challengeNo;
 
                     const embed = new Discord.EmbedBuilder()
-                        .setColor(0xd4a066)
+                        .setColor(COLORS.red)
                         .setTitle(`The submission by ${username} for Challenge ${dayNo} has been removed.`)
                         .setDescription(`Their submission is as follows:\n${Submissions}\n\nThe moderator that removed it was: ${modname}.`)
                         .setFooter({text:'If there is a problem with this, please report this!'});

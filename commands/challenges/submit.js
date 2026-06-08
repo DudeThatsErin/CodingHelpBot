@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const connection = require('../../database.js');
 const config = require('../../config/config.json');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'submit',
@@ -44,7 +45,7 @@ module.exports = {
                     );
 
                     let embed = new Discord.MessageEmbed()
-                        .setColor(0x616169)
+                        .setColor(COLORS.green)
                         .setTitle(`Thank you, ${tag}, for submitting your answer for challenge ${dayNo}.`)
                         .setDescription(`The answer you submitted was:\n${answer}\n\nIf you want to modify your answer, please copy and paste this command with your updated answer: \`${config.prefix}modify-answer ${msgId} [replace this with your new answer]\``)
                         .setFooter({text:`If you need to modify your answer please run the ${config.prefix}modify-answer command. Thank you!`});
@@ -59,7 +60,7 @@ module.exports = {
                     );
 
                     let embed = new Discord.MessageEmbed()
-                        .setColor(0x616169)
+                        .setColor(COLORS.green)
                         .setTitle(`Thank you, ${tag}, for submitting your answer for challenge ${dayNo}.`)
                         .setDescription(`The answer you submitted was:\n${answer}\n\nThis is the attachment you submitted: ${url}\n\nIf you want to modify your answer, please copy and paste this command with your updated answer: \`${config.prefix}modify-answer ${msgId} [replace this with your new answer]\``)
                         .setFooter({text:`If you need to modify your answer please run the ${config.prefix}modify-answer command. Thank you!`});

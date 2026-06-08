@@ -1,4 +1,5 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags } = require('discord.js');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'about',
@@ -12,7 +13,7 @@ module.exports = {
         
         // Create about embed using standard Discord.js
         const aboutEmbed = new EmbedBuilder()
-            .setColor(0x1ABA7C)
+            .setColor(COLORS.teal)
             .setTitle('About r/CodingHelp Bot')
             .setThumbnail(interaction.client.user.displayAvatarURL())
             .setDescription('I am the official bot of the r/CodingHelp Discord server and subreddit community!')

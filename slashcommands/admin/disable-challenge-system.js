@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { disableSystem } = require('../../database-init.js');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'disable-challenge-system',
@@ -14,7 +15,7 @@ module.exports = {
             
             if (success) {
                 const embed = new EmbedBuilder()
-                    .setColor(0xff9900)
+                    .setColor(COLORS.orange)
                     .setTitle('⚠️ Challenge System Disabled')
                     .setDescription('The challenge system has been disabled for this server.')
                     .addFields(
@@ -30,7 +31,7 @@ module.exports = {
             console.error('Error disabling challenge system:', error);
             
             const errorEmbed = new EmbedBuilder()
-                .setColor(0xff0000)
+                .setColor(COLORS.red)
                 .setTitle('❌ Error')
                 .setDescription('Failed to disable the challenge system. Please try again or contact an administrator.')
                 .setTimestamp();

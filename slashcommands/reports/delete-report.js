@@ -1,6 +1,7 @@
 const connection = require('../../database.js');
 const Discord = require('discord.js');
 const bot = require('../../config/bot.json')
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'deletereport',
@@ -32,7 +33,7 @@ module.exports = {
             const avatar = results[0].avatar;
 
             let report = new Discord.EmbedBuilder()
-                .setColor(0x138D75)
+                .setColor(COLORS.red)
                 .setTitle(`Your bug has been deleted!`)
                 .setAuthor({name: authorUsername, iconURL: avatar})
                 .setDescription(`**This is the latest message on the report:**\n${original}`)

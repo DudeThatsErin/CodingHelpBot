@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const connection = require('../../database.js');
 const config = require('../../config/config.json');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'edit-challenge',
@@ -29,7 +30,7 @@ module.exports = {
             );
 
             let embed = new Discord.EmbedBuilder()
-                .setColor(0x848099)
+                .setColor(COLORS.teal)
                 .setTitle(`Challenge ${day}`)
                 .setDescription(`${title}`)
                 .setFooter({text:`Run the ${config.prefix}submit to submit answers to this challenge.`});

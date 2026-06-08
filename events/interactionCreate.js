@@ -1,9 +1,23 @@
 const { MessageFlags, EmbedBuilder, Collection } = require('discord.js');
 const o = require('../config/owner.json');
+const { COLORS } = require('../logging/logger');
 
 module.exports = {
     name: 'interactionCreate',
     async execute(interaction, client) {
+        // ModMail close confirmation buttons (works in DMs)
+        if (interaction.isButton() && interaction.customId.startsWith('modmail_close_')) {
+            return client.modMail.handleCloseButton(interaction);
+        }
+
+        // Moderation context-menu modals (Ban/Kick/Timeout/Warn from right-click)
+        if (interaction.isModalSubmit()) {
+            if (interaction.customId.startsWith('mod_')) {
+                return client.moderation.handleModal(interaction);
+            }
+            return;
+        }
+
         if (interaction.isMessageComponent()) return;
 
         const command = client.slashCommands.get(interaction.commandName) || client.erinCommands.get(interaction.commandName);
@@ -80,7 +94,7 @@ module.exports = {
                     const errorStack = error.stack ? error.stack.substring(0, 1000) + '...' : 'No stack trace available';
                     
                     const embed = new EmbedBuilder()
-                        .setColor(0x000000)
+                        .setColor(COLORS.red)
                         .setTitle('Oh no! An _error_ has appeared!')
                         .addFields({
                             name: '**Error Name:**',

@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { enableSystem } = require('../../database-init.js');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'enable-challenge-system',
@@ -59,7 +60,7 @@ module.exports = {
                 );
 
                 const embed = new EmbedBuilder()
-                    .setColor(0x00ff00)
+                    .setColor(COLORS.green)
                     .setTitle('✅ Challenge System Enabled')
                     .setDescription('The challenge system has been successfully enabled for this server!')
                     .addFields(
@@ -80,7 +81,7 @@ module.exports = {
             console.error('Error enabling challenge system:', error);
             
             const errorEmbed = new EmbedBuilder()
-                .setColor(0xff0000)
+                .setColor(COLORS.red)
                 .setTitle('❌ Error')
                 .setDescription('Failed to enable the challenge system. Please try again or contact an administrator.')
                 .setTimestamp();

@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'editors',
@@ -6,7 +7,7 @@ module.exports = {
     usage: `/editors`,
     execute(interaction) {
         const embed = new Discord.EmbedBuilder()
-            .setColor(0xB87364)
+            .setColor(COLORS.teal)
             .setTitle('This is a list of the most commonly used IDEs or Text Editors...')
             .setDescription('This is not an exhaustive list. You can see an exhaustive list on our knowledgebase: https://codinghelp.site')
             .addFields(

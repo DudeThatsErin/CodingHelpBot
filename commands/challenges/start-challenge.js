@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const connection = require('../../database.js');
 const config = require('../../config/config.json');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'start-challenge',
@@ -28,7 +29,7 @@ module.exports = {
                                 prizes.push(prize);
                             });
                             const rules = new Discord.EmbedBuilder()
-                                .setColor(0x819980)
+                                .setColor(COLORS.green)
                                 .setTitle(`Our Challenge has started!`)
                                 .setDescription('If you would like to participate, please check out the <#703989632110690324> channel to get the \`Participants\` role. Please read our rules, they explain how to use our challenge system!')
                                 .addFields(

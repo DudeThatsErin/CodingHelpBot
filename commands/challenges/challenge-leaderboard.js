@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const connection = require('../../database.js');
 const config = require('../../config/config.json');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'leaderboard',
@@ -44,7 +45,7 @@ module.exports = {
 
             let embed2 = new Discord.EmbedBuilder()
             .setTitle('This is the current challenge leaderboard.')
-            .setColor(0xc9ca66)
+            .setColor(COLORS.teal)
             .addFields(
                 {name: `Top 10`, value: userNames, inline: true},
                 {name: 'Points', value: points, inline: true},
@@ -62,7 +63,7 @@ module.exports = {
             const p = ponts[0][0].total;
             let embed2 = new Discord.EmbedBuilder()
                 .setTitle('This is the current challenge leaderboard.')
-                .setColor(0xc9ca66)
+                .setColor(COLORS.teal)
                 .addFields(
                     {name: `Top 10`, value: userNames, inline: true},
                     {name: 'Points', value: points, inline: true},

@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const connection = require('../../database.js');
 const bot = require('../../config/bot.json');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'denied-sugg',
@@ -37,24 +38,25 @@ module.exports = {
             }
 
         const result2 = await connection.all(
-            `SELECT Author from Suggs WHERE noSugg = ?;`,
+            `SELECT Author, Name from Suggs WHERE noSugg = ?;`,
             [msgId],
         );
-        const OGauthor = result2[0][0].Author;
-        const aut = await interaction.guild.members.fetch(OGauthor);
-        const name = aut.user.username;
+        const OGauthor = result2[0].Author;
+        const aut = await interaction.guild.members.fetch(OGauthor).catch(() => null);
+        // Prefer the name stored in the DB; fall back to the live member, then a generic label.
+        const name = result2[0].Name || (aut ? aut.user.username : 'Unknown User');
 
         const result3 = await connection.all(
             `SELECT Message from Suggs WHERE noSugg = ?;`,
             [msgId],
         );
-        const suggestion = result3[0][0].Message;
+        const suggestion = result3[0].Message;
 
         const result4 = await connection.all(
             `SELECT Avatar from Suggs WHERE noSugg = ?;`,
             [msgId],
         );
-        const avatar = result4[0][0].Avatar;
+        const avatar = result4[0].Avatar;
         const mod = interaction.user.id;
         const stats = interaction.options.getString('message');
 
@@ -67,17 +69,17 @@ module.exports = {
             `SELECT stat FROM Suggs WHERE noSugg = ?;`,
             [msgId]
         );
-        const upStatus = result8[0][0].stat;
+        const upStatus = result8[0].stat;
 
         const moderator = await connection.all(
             `SELECT Moderator FROM Suggs WHERE noSugg = ?;`,
             [msgId]
         );
-        const moder = moderator[0][0].Moderator;
+        const moder = moderator[0].Moderator;
         const moderate = moder.tag || interaction.user.tag;
         
         const denied = new Discord.EmbedBuilder()
-            .setColor(0xA4503E)
+            .setColor(COLORS.red)
             .setAuthor({ name: name, iconURL: avatar})
             .setDescription(suggestion)
             .addFields(
@@ -86,15 +88,15 @@ module.exports = {
             )
             .setTimestamp()
             .setFooter({text: 'If you don\'t understand this reason, please contact the moderator that updated your suggestion. Thank you!'});
-            interaction.client.users.cache.get(OGauthor).send({ embeds: [denied] });
-            interaction.reply({text:`That has been denied and the suggestion has been deleted. 😃`});
+            if (aut) await aut.send({ embeds: [denied] }).catch(() => {});
+            interaction.reply({content:`That has been denied and the suggestion has been deleted. 😃`});
                 try {
                     await connection.run(
                         `DELETE FROM Suggs WHERE noSugg = ? AND Author = ?;`,
                         [msgId, OGauthor],
                     );
                 } catch (error) {
-                    interaction.reply({text:'There was an error deleting the suggestion from the database. Please report this!'});
+                    interaction.followUp({content:'There was an error deleting the suggestion from the database. Please report this!'});
                     console.log(error);
                     return;
                 }

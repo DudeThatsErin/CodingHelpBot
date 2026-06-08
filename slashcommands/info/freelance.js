@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const ee = require('../../config/embed.json');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'freelance',
@@ -7,7 +8,7 @@ module.exports = {
     usage: `/freelance`,
     execute(interaction) {
         let embed = new Discord.EmbedBuilder()
-            .setColor(0x497AEC)
+            .setColor(COLORS.teal)
             .setTitle('For freelancing jobs, consider some of the following websites...')
             .addFields(
                 {

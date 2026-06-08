@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const connection = require('../../database.js');
 const config = require('../../config/config.json');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'clear-points',
@@ -22,7 +23,7 @@ module.exports = {
         } else {
 
                 let embed = new Discord.EmbedBuilder()
-                    .setColor(0xc9a066)
+                    .setColor(COLORS.orange)
                     .setTitle(`I have removed all points from ${player}! Their submission is not unreviewed.`)
                     .setDescription(`Thank you for that, ${author}!`)
                     .setFooter({text:'If there is a problem with this, please report it!'});

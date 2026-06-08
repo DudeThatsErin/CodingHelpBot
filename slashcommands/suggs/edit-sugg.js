@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const connection = require('../../database.js');
 const bot = require('../../config/bot.json');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'editsugg',
@@ -36,19 +37,19 @@ module.exports = {
             `SELECT Author from Suggs WHERE noSugg = ?;`,
             [msgId],
         );
-        const author = result2[0][0].Author;
+        const author = result2[0].Author;
 
         const result3 = await connection.all(
             `SELECT Message from Suggs WHERE noSugg = ?;`,
             [msgId],
         );
-        const suggestion = result3[0][0].Message;
+        const suggestion = result3[0].Message;
 
         const result4 = await connection.all(
             `SELECT Avatar from Suggs WHERE noSugg = ?;`,
             [msgId],
         );
-        const avatar = result4[0][0].Avatar;
+        const avatar = result4[0].Avatar;
 
         const stats = interaction.options.getString('message');
 
@@ -63,10 +64,10 @@ module.exports = {
             `SELECT Message FROM Suggs WHERE noSugg = ?;`,
             [msgId]
         );
-        const upStatus = result8[0][0].Message;
+        const upStatus = result8[0].Message;
 
         const edited = new Discord.EmbedBuilder()
-            .setColor(0x1C3D77)
+            .setColor(COLORS.yellow)
             .setAuthor({name: author, iconURL: avatar})
             .setDescription('Your suggestion has been updated!')
             .addFields(
@@ -78,7 +79,7 @@ module.exports = {
         interaction.user.send({ embeds: [edited] });
 
         const editedTwo = new Discord.EmbedBuilder()
-            .setColor(0x004d4d)
+            .setColor(COLORS.yellow)
             .setAuthor({name: author, iconURL: avatar})
             .setDescription(upStatus)
             .setFooter({text:'If you are interested in submitting a suggestion please use: h!suggestion'});

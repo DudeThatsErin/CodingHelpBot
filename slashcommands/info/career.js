@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const ee = require('../../config/embed.json');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'career',
@@ -7,7 +8,7 @@ module.exports = {
     usage: `/career`,
     execute(interaction) {
         let embed = new Discord.EmbedBuilder()
-            .setColor(0x1E3568)
+            .setColor(COLORS.teal)
             .setTitle('For a career or internship in computer programming or similar tech-related fields, consider some of the following websites...')
             .addFields(
                 {

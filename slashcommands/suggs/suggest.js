@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const connection = require('../../database.js');
 const bot = require('../../config/bot.json');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'suggestions',
@@ -24,7 +25,7 @@ module.exports = {
         let avatar = interaction.user.displayAvatarURL();
 
         const initial = new Discord.EmbedBuilder()
-        .setColor(0xFADF2E)
+        .setColor(COLORS.yellow)
         .setAuthor({name: name, icon_url: avatar})
         .setDescription(messageArgs)
         .setFooter({text: '📈 This suggestion currently needs votes and feedback. If you would like to discuss it, please visit the associated thread.'});
@@ -41,8 +42,8 @@ module.exports = {
             });
             try {
                 await connection.run(
-                    `INSERT INTO Suggs (noSugg, Author, Message, Avatar, stat) VALUES(?, ?, ?, ?, ?)`,
-                    [message.id, author, messageArgs, avatar, newStatus]
+                    `INSERT INTO Suggs (noSugg, Author, Name, Message, Avatar, stat) VALUES(?, ?, ?, ?, ?, ?)`,
+                    [message.id, author, name, messageArgs, avatar, newStatus]
                 );
 
             } catch(err) {

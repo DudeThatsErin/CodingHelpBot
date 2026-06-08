@@ -484,6 +484,154 @@
         "usage": "/wiki",
         "example": "/wiki"
       }
+    ],
+    "Moderation Commands": [
+      {
+        "name": "ban",
+        "description": "Ban a member from the server.",
+        "aliases": [],
+        "usage": "/ban <user> [reason] [delete_days]",
+        "example": "/ban @user Spamming 1"
+      },
+      {
+        "name": "unban",
+        "description": "Unban a user by their ID.",
+        "aliases": [],
+        "usage": "/unban <user_id> [reason]",
+        "example": "/unban 123456789012345678 Appeal accepted"
+      },
+      {
+        "name": "kick",
+        "description": "Kick a member from the server.",
+        "aliases": [],
+        "usage": "/kick <user> [reason]",
+        "example": "/kick @user Breaking rules"
+      },
+      {
+        "name": "timeout",
+        "description": "Timeout (mute) a member for a set duration.",
+        "aliases": [],
+        "usage": "/timeout <user> <duration> [reason]",
+        "example": "/timeout @user 1h Spamming"
+      },
+      {
+        "name": "untimeout",
+        "description": "Remove a timeout from a member.",
+        "aliases": [],
+        "usage": "/untimeout <user> [reason]",
+        "example": "/untimeout @user Resolved"
+      },
+      {
+        "name": "warn",
+        "description": "Warn a member and record it.",
+        "aliases": [],
+        "usage": "/warn <user> <reason>",
+        "example": "/warn @user Please follow the rules"
+      },
+      {
+        "name": "warnings",
+        "description": "List a user's warnings.",
+        "aliases": [],
+        "usage": "/warnings <user>",
+        "example": "/warnings @user"
+      },
+      {
+        "name": "delwarn",
+        "description": "Delete a warning by its ID.",
+        "aliases": [],
+        "usage": "/delwarn <id>",
+        "example": "/delwarn 42"
+      },
+      {
+        "name": "purge",
+        "description": "Bulk-delete recent messages in this channel.",
+        "aliases": [],
+        "usage": "/purge <amount> [user]",
+        "example": "/purge 20"
+      },
+      {
+        "name": "slowmode",
+        "description": "Set the slowmode (rate limit) for a channel.",
+        "aliases": [],
+        "usage": "/slowmode <seconds> [channel]",
+        "example": "/slowmode 10"
+      },
+      {
+        "name": "lock",
+        "description": "Lock a channel so @everyone cannot send messages.",
+        "aliases": [],
+        "usage": "/lock [channel] [reason]",
+        "example": "/lock #general Raid"
+      },
+      {
+        "name": "unlock",
+        "description": "Unlock a previously locked channel.",
+        "aliases": [],
+        "usage": "/unlock [channel]",
+        "example": "/unlock #general"
+      },
+      {
+        "name": "userinfo",
+        "description": "Show account info, roles, and warnings for a user.",
+        "aliases": [],
+        "usage": "/userinfo [user]",
+        "example": "/userinfo @user"
+      }
+    ],
+    "ModMail Commands": [
+      {
+        "name": "reply",
+        "description": "Reply to the user in this ModMail ticket (sent to them as a DM). Anonymous by default; toggle off to sign with your name.",
+        "aliases": [],
+        "usage": "/reply <message> [attachment] [anonymous]",
+        "example": "/reply Thanks for reaching out, we are looking into it!"
+      },
+      {
+        "name": "close",
+        "description": "Close the current ModMail ticket and notify the user. An optional closing message can be sent. Closures are always anonymous.",
+        "aliases": [],
+        "usage": "/close [message]",
+        "example": "/close Closing this as your question has been answered."
+      }
+    ]
+  },
+  "context_menu_commands": {
+    "Moderation (Right-click a user > Apps)": [
+      {
+        "name": "Ban User",
+        "description": "Opens a modal to ban the selected user with a reason and optional message-delete days.",
+        "aliases": [],
+        "usage": "Right-click a user > Apps > Ban User",
+        "example": "Right-click @user > Apps > Ban User"
+      },
+      {
+        "name": "Kick User",
+        "description": "Opens a modal to kick the selected user with a reason.",
+        "aliases": [],
+        "usage": "Right-click a user > Apps > Kick User",
+        "example": "Right-click @user > Apps > Kick User"
+      },
+      {
+        "name": "Timeout User",
+        "description": "Opens a modal to timeout the selected user with a duration and reason.",
+        "aliases": [],
+        "usage": "Right-click a user > Apps > Timeout User",
+        "example": "Right-click @user > Apps > Timeout User"
+      },
+      {
+        "name": "Warn User",
+        "description": "Opens a modal to warn the selected user with a reason.",
+        "aliases": [],
+        "usage": "Right-click a user > Apps > Warn User",
+        "example": "Right-click @user > Apps > Warn User"
+      },
+      {
+        "name": "User Info",
+        "description": "Shows account info, roles, and warnings for the selected user.",
+        "aliases": [],
+        "usage": "Right-click a user > Apps > User Info",
+        "example": "Right-click @user > Apps > User Info"
+      }
     ]
   }
 }

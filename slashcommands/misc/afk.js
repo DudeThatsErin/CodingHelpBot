@@ -1,4 +1,5 @@
 const { EmbedBuilder, MessageFlags } = require('discord.js');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'afk',
@@ -100,7 +101,7 @@ module.exports = {
         }
         
         const embed = new EmbedBuilder()
-            .setColor(0x3751bc)
+            .setColor(COLORS.blurple)
             .setTitle('AFK Status Set')
             .setDescription(`You are now AFK for **${durationText}**`)
             .addFields(

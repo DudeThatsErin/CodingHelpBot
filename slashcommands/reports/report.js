@@ -2,6 +2,7 @@ const connection = require('../../database.js');
 const bot = require('../../config/bot.json');
 const me = require('../../config/owner.json');
 const { EmbedBuilder } = require('discord.js');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'report',
@@ -32,7 +33,7 @@ module.exports = {
         const url = interaction.options.getAttachment('attachment') || 'No';
 
         const report = new EmbedBuilder()
-        .setColor(0x8c1149)
+        .setColor(COLORS.red)
         .setTitle('Oops! A *bug* has appeared!')
         .setAuthor({
             name: authorUsername,
@@ -47,7 +48,7 @@ module.exports = {
 
         const msg = channel.send({ embeds: [report] }).then(async message => {
             const report3 = new EmbedBuilder()
-                .setColor(0x8c1149)
+                .setColor(COLORS.red)
                 .setTitle('Oops! A *bug* has appeared!')
                 .setAuthor({
                     name: authorUsername,
@@ -69,7 +70,7 @@ module.exports = {
 
 
         let report2 = new EmbedBuilder()
-            .setColor(0x11818C)
+            .setColor(COLORS.green)
             .setTitle(`Your report has been sent to ${me.name} aka ${me.username}!`)
             .setAuthor({ name: authorUsername, icon_url: avatar })
             .setThumbnail(avatar)

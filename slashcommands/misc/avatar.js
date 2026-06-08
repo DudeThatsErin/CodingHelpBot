@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'avatar',
@@ -18,7 +19,7 @@ module.exports = {
         const person = interaction.options.getUser('user');
 
         const myEmbed = new EmbedBuilder()
-            .setColor(0x38A6BC)
+            .setColor(COLORS.teal)
             .setTitle('Your Avatar')
             .addFields(
                 {
@@ -41,7 +42,7 @@ module.exports = {
         if(!person) return interaction.reply({ embeds: [myEmbed], ephemeral: true });
 
         const theirEmbed = new EmbedBuilder()
-            .setColor(0x38A6BC)
+            .setColor(COLORS.teal)
             .setTitle(`${person.username}'s Avatar`)
             .addFields(
                 {

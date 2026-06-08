@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const ee = require('../../config/embed.json');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'w3c',
@@ -7,7 +8,7 @@ module.exports = {
     usage: `/w3c`,
     execute(interaction) {
         const embed = new Discord.EmbedBuilder()
-            .setColor(0x7FD839)
+            .setColor(COLORS.orange)
             .setTitle('Avoid W3Schools!!!')
             .setDescription(`**W3Schools** isn't a good resource for learning anything beyond the most basic HTML & CSS.`)
             .addFields(

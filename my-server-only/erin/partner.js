@@ -2,6 +2,7 @@
 const Discord = require('discord.js');
 const ee = require('../../config/embed.json');
 const bot = require('../../config/bot.json');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'partners',
@@ -11,7 +12,7 @@ module.exports = {
     execute(interaction) {
 
         const aboutPartner = new Discord.EmbedBuilder()
-            .setColor(ee.rand_color)
+            .setColor(COLORS.pink)
             .setTitle('What is a Discord Partner?')
             .setDescription('That is someone that has partnered with our server as they believe in it as much as the staff team does.')
             .addFields(
@@ -19,7 +20,7 @@ module.exports = {
             )
 
         const smartWatch = new Discord.EmbedBuilder()
-            .setColor(ee.rand_color)
+            .setColor(COLORS.pink)
             .setTitle('Smart Watch')
             .setImage('https://media.discordapp.net/attachments/792764567649517582/793749473959346186/Banner.png')
             .setDescription('The server for the intellectual watch wearer. Smartwatch is a place to talk with other watch wearers and get help on making your smartwatch part of your daily life, with Support teams for the major wearable brands. We offer community & brand events, as well as up to date news about your favorite brands.')

@@ -1,6 +1,7 @@
 const config = require('../../config/config.json');
 const Discord = require('discord.js');
 const ee = require('../../config/embed.json');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'largehosting',
@@ -9,7 +10,7 @@ module.exports = {
     botSpamOnly: 1,
     execute(interaction) {
         const embed = new Discord.EmbedBuilder()
-            .setColor(0xD3D13F)
+            .setColor(COLORS.teal)
             .setTitle('There are many hosting providers for larger projects.')
             .addFields(
                 {

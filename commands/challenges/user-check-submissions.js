@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const connection = require('../../database.js');
 const config = require('../../config/config.json');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'user-check-submissions',
@@ -28,14 +29,14 @@ module.exports = {
 
             // notDefined Embed
             const notDefined = new Discord.EmbedBuilder()
-                .setColor(0x3e5366)
+                .setColor(COLORS.orange)
                 .setTitle(`The submission for Challenge ${dayNo} has not been reviewed yet.`)
                 .setDescription(`The submission is as follows:\n${Submissions}\n\nYou had this attachment:${attachment}\n\nThe message ID is as follows: \`${msgId}\``)
                 .setFooter({text:'If there is a problem with this, please report this!'});
 
             // Defined Embed
             const defined = new Discord.EmbedBuilder()
-                .setColor(0xd4a066)
+                .setColor(COLORS.green)
                 .setTitle(`The submission for Challenge ${dayNo} has been reviewed.`)
                 .setDescription(`The submission is as follows:\n${Submissions}\n\nYou had this attachment:\n${attachment}\n\nThe message ID is as follows: \`${msgId}\`\n\nThe moderator that reviewed it was: ${modname}.`)
                 .setFooter({text:'If there is a problem with this, please report this!'});

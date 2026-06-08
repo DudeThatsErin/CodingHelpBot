@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const connection = require('../../database.js');
 const bot = require('../../config/bot.json');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'statussugg',
@@ -25,52 +26,53 @@ module.exports = {
         const mId = result[0].noSugg;
 
         const result2 = await connection.all(
-            `SELECT Author from Suggs WHERE noSugg = ?;`,
+            `SELECT Author, Name from Suggs WHERE noSugg = ?;`,
             [msgId],
         );
-        const OGauthor = result2[0][0].Author;
-        const aut = await interaction.guild.members.fetch(OGauthor);
-        const name = aut.user.username;
+        const OGauthor = result2[0].Author;
+        const aut = await interaction.guild.members.fetch(OGauthor).catch(() => null);
+        // Prefer the name stored in the DB; fall back to the live member, then a generic label.
+        const name = result2[0].Name || (aut ? aut.user.username : 'Unknown User');
 
         const result3 = await connection.all(
             `SELECT Message from Suggs WHERE noSugg = ?;`,
             [msgId],
         );
-        const suggestion = result3[0][0].Message;
+        const suggestion = result3[0].Message;
 
         const result4 = await connection.all(
             `SELECT Avatar from Suggs WHERE noSugg = ?;`,
             [msgId],
         );
-        const avatar = result4[0][0].Avatar;
+        const avatar = result4[0].Avatar;
         
         const result5 = await connection.all(
             `SELECT LAST_EDITED from Suggs WHERE noSugg = ?`,
             [msgId],
         );
-        const date = result5[0][0].LAST_EDITED;
+        const date = result5[0].LAST_EDITED;
 
         const result6 = await connection.all(
             `SELECT Moderator from Suggs WHERE noSugg = ?`,
             [msgId],
         );
         let modd = 'No one has updated this suggestion yet.';
-        if (result6[0][0].Moderator != 'New Suggestion, No Mod.') {
-            mdd = result6[0][0].Moderator;
-            md = await interaction.guild.members.fetch(mdd);
-            modd = md.user.username;
+        if (result6[0].Moderator != 'New Suggestion, No Mod.') {
+            mdd = result6[0].Moderator;
+            md = await interaction.guild.members.fetch(mdd).catch(() => null);
+            modd = md ? md.user.username : 'Unknown Moderator';
         } else {
-            mdd = result6[0][0].Moderator;
+            mdd = result6[0].Moderator;
         }
 
         const result7 = await connection.all(
             `SELECT stat from Suggs WHERE noSugg = ?`,
             [msgId],
         );
-        const status = result7[0][0].stat;
+        const status = result7[0].stat;
 
         const initial = new Discord.EmbedBuilder()
-        .setColor(0x771C73)
+        .setColor(COLORS.teal)
         .setAuthor({name: name, iconURL: avatar})
         .setDescription(suggestion)
         .addFields(

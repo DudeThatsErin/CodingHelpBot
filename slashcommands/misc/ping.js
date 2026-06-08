@@ -1,6 +1,7 @@
 const config = require('../../config/config.json');
 const { EmbedBuilder, AttachmentBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags } = require('discord.js');
 const path = require('path');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'ping',
@@ -30,7 +31,7 @@ module.exports = {
 
         // Create ping embed using standard Discord.js
         const pingEmbed = new EmbedBuilder()
-            .setColor(0x1ABA7C)
+            .setColor(COLORS.green)
             .setTitle(' Pong!')
             .setImage('attachment://ch_ping.png')
             .setDescription(`Thanks for checking if r/CodingHelp was online. r/CodingHelp has been awake for **${uptimeString}**!\n\nMy command prefix is \`${config.prefix}\`.\n\nI am the official bot of the [CodingHelp](https://reddit.com/r/CodingHelp) discord server! If you want to see all of my commands run \`/help\`.`)

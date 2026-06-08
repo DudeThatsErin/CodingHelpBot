@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'nojquery',
@@ -6,7 +7,7 @@ module.exports = {
     description: 'Sends information on why JQuery isn’t used and is bad to use.',
     execute(interaction) {
         const embed = new Discord.EmbedBuilder()
-            .setColor(0x474961)
+            .setColor(COLORS.orange)
             .setTitle('Avoid JQuery!!!')
             .addFields(
                 {

@@ -1,5 +1,6 @@
 const connection = require('../../database.js');
 const bot = require('../../config/bot.json');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'statusreport',
@@ -32,7 +33,7 @@ module.exports = {
             const status = results[0]?.stat || 'I have not started working on it yet. I will get to it as soon as I can. Thank you!';
 
             const report = {
-                color: 0x5241CE,
+                color: COLORS.teal,
                 title: 'This is the current status of your bug report...',
                 author: {
                     name: authorUsername,

@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const connection = require('../../database.js');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'thanks-leaderboard',
@@ -42,7 +43,7 @@ module.exports = {
 
             let embed2 = new Discord.EmbedBuilder()
             .setTitle('This is the current thanks leaderboard.')
-            .setColor(0xAD66A0)
+            .setColor(COLORS.teal)
             .addFields(
                 [{name: `Top 10`, value: userNames, inline: true},
                 {name: 'Thanks', value: points, inline: true},
@@ -60,7 +61,7 @@ module.exports = {
             const p = ponts && ponts.length > 0 ? ponts[0].total : 0;
             let embed2 = new Discord.EmbedBuilder()
                 .setTitle('This is the current thanks leaderboard.')
-                .setColor(0xc9ca66)
+                .setColor(COLORS.teal)
                 .addFields(
                     [{name: `Top 10`, value: userNames, inline: true},
                     {name: 'Thanks', value: points, inline: true},

@@ -3,6 +3,8 @@ const me = require('../config/owner.json');
 const Discord = require('discord.js');
 const { EmbedBuilder, ButtonStyle } = require('discord.js');
 const connection = require('../database.js')
+const { COLORS } = require('../logging/logger');
+const { isSystemEnabled } = require('../database-init.js');
 
 module.exports = {
     name: 'messageCreate',
@@ -18,6 +20,34 @@ module.exports = {
         if (message.author.bot) {
             //console.log('bot message');
             return;
+        }
+
+        // ModMail - a DM to the bot opens/continues a moderator ticket
+        if (!message.guild) {
+            await client.modMail.handleUserDM(message);
+            return;
+        }
+
+        const autoBanChannelId = '1513313617473441842'; // #get-banned-here
+        if (message.guild && message.channel.id === autoBanChannelId) {
+            if (message.member.roles.cache.has('780941276602302523')) {
+                return;
+            }
+
+            try {
+                await message.author.send(`You were banned from **${message.guild.name}** for posting in an auto-ban channel. You can appeal here: https://dyno.gg/form/3069347e`).catch(() => {});
+                await message.member.ban({ reason: `Posted in auto-ban channel ${autoBanChannelId}` });
+                await message.delete().catch(() => {});
+                console.log(`Banned ${message.author.tag} (${message.author.id}) for posting in ${autoBanChannelId}`);
+            } catch (error) {
+                console.error(`Failed to ban ${message.author.tag} (${message.author.id}) for posting in ${autoBanChannelId}:`, error);
+            }
+            return;
+        }
+
+        // ModMail - keep a ticket's "last update" fresh on any note/activity in a ticket channel
+        if (message.channel.parentId === '990720040296919130') {
+            client.modMail.touchTicket(message.channel.id).catch(() => {});
         }
 
         // AFK System - Handle user returning from AFK
@@ -145,24 +175,18 @@ module.exports = {
             }
         }
 
-        // Check if challenge system is enabled before querying challenge tables
-        const { isSystemEnabled } = require('../database-init.js');
-        const challengeSystemEnabled = await isSystemEnabled(message.guild.id, 'challenges');
-        
-        let partsResults = [];
-        if (challengeSystemEnabled) {
-            partsResults = await connection.all(
-                `SELECT * FROM Challenges WHERE guildId = ?;`,
-                [message.guild.id]
-            );
-        }
-        
-        if(command.partsOnly === 1) {
-            for(const ID of partsResults.player) {
-                if(message.member.id == ID) {
+        // Only query the challenge tables for commands that actually need participant data
+        if (command.partsOnly === 1) {
+            const challengeSystemEnabled = await isSystemEnabled(message.guild.id, 'challenges');
+            const partsResults = challengeSystemEnabled
+                ? await connection.all(`SELECT * FROM Challenges WHERE guildId = ?;`, [message.guild.id])
+                : [];
+
+            for (const ID of partsResults.player) {
+                if (message.member.id == ID) {
                     value++
                 }
-                if(value == partsResults.player.length) {
+                if (value == partsResults.player.length) {
                     message.react('❌');
                     message.reply({ content: `This is a command only challenge participants can use. You do not have the required role. Participants have the \`Participants\` role. If there is an issue, please report this to the Challenge Moderators.`})
                 }
@@ -207,7 +231,7 @@ module.exports = {
                         .setURL('https://dudethatserin.com')
                 )
             const embed = new EmbedBuilder()
-                .setColor(0xAA2C2C)
+                .setColor(COLORS.red)
                 .setTitle('Oh no! An _error_ has appeared!')
                 .setDescription(`**Contact Bot Owner:** <@${me.id}>`)
                 .addFields([

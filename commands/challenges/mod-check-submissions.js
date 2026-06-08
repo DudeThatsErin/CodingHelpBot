@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const connection = require('../../database.js');
 const config = require('../../config/config.json');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'mod-check-submissions',
@@ -25,7 +26,7 @@ module.exports = {
                 const number = result2[0][0].challengeNo;
                 const question = result2[0][0].title;
                 let embed = new Discord.EmbedBuilder()
-                    .setColor(0x3fa06)
+                    .setColor(COLORS.teal)
                     .setTitle(`This is the question that was asked during Challenge ${number}`)
                     .setDescription(question)
                     .setFooter({text:'If this is not right, please report it!'});
@@ -51,14 +52,14 @@ module.exports = {
 
                     // notDefined Embed
                     const notDefined = new Discord.EmbedBuilder()
-                        .setColor(0x3e5366)
+                        .setColor(COLORS.orange)
                         .setTitle(`The submission by ${username} for Challenge ${dayNo} has not been reviewed yet.`)
                         .setDescription(`Their submission is as follows:\n${Submissions}\n\nThey had this attachment:\n${attachment}\n\nTheir message ID is as follows: \`${msgId}\``)
                         .setFooter({text:'If there is a problem with this, please report this!'});
 
                     // Defined Embed
                     const defined = new Discord.EmbedBuilder()
-                        .setColor(0xd4a066)
+                        .setColor(COLORS.green)
                         .setTitle(`The submission by ${username} for Challenge ${dayNo} has been reviewed.`)
                         .setDescription(`Their submission is as follows:\n${Submissions}\n\nThey had this attachment:\n${attachment}\n\nTheir message ID is as follows: \`${msgId}\`\n\nThe moderator that reviewed it was: ${modname}.`)
                         .setFooter({text:'If there is a problem with this, please report this!'});

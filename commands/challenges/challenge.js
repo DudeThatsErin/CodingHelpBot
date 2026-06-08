@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const connection = require('../../database.js');
 const config = require('../../config/config.json');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'challenge',
@@ -41,7 +42,7 @@ module.exports = {
             } else {
 
                 let embeD = new Discord.EmbedBuilder()
-                    .setColor(0x848099)
+                    .setColor(COLORS.teal)
                     .setTitle(`Challenge ${challengeNo}`)
                     .setDescription(answer)
                     .setFooter({text:`Run the ${config.prefix}submit command to submit answers to this challenge.`});
@@ -60,7 +61,7 @@ module.exports = {
                 const res = results[0];
                 const mes = res.msgId;
                 let embed = new Discord.EmbedBuilder()
-                    .setColor(0x92caa0)
+                    .setColor(COLORS.green)
                     .setTitle(`I have added Challenge number ${challengeNo} to the \`Challenge\` Database.`)
                     .setDescription(`The submission is as follows: ${answer} You can see it here: <#${announcementsChannel}>.\n\nThe message ID for the challenge is: \`${mes}\``)
                     .setFooter('If this is in error, please report this!');

@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const connection = require('../../database.js');
 const bot = require('../../config/bot.json');
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'suggestionprogress',
@@ -37,23 +38,25 @@ module.exports = {
                 }
 
             const result2 = await connection.all(
-                `SELECT Author from Suggs WHERE noSugg = ?;`,
+                `SELECT Author, Name from Suggs WHERE noSugg = ?;`,
                 [msgId],
             );
-            const OGauthor = result2[0][0].Author;
-            let name = (await interaction.client.users.cache.get(OGauthor)).tag;
+            const OGauthor = result2[0].Author;
+            const aut = await interaction.guild.members.fetch(OGauthor).catch(() => null);
+            // Prefer the name stored in the DB; fall back to the live member, then a generic label.
+            let name = result2[0].Name || (aut ? aut.user.tag : 'Unknown User');
 
             const result3 = await connection.all(
                 `SELECT Message from Suggs WHERE noSugg = ?;`,
                 [msgId],
             );
-            const suggestion = result3[0][0].Message;
+            const suggestion = result3[0].Message;
 
             const result4 = await connection.all(
                 `SELECT Avatar from Suggs WHERE noSugg = ?;`,
                 [msgId],
             );
-            const avatar = result4[0][0].Avatar;
+            const avatar = result4[0].Avatar;
             const mod = interaction.user.id;
             const stats = interaction.options.getString('message');
 
@@ -66,17 +69,17 @@ module.exports = {
                 `SELECT stat FROM Suggs WHERE noSugg = ?;`,
                 [msgId]
             );
-            const upStatus = result8[0][0].stat;
+            const upStatus = result8[0].stat;
 
             const moderator = await connection.all(
                 `SELECT Moderator FROM Suggs WHERE noSugg = ?;`,
                 [msgId]
             );
-            const moder = moderator[0][0].Moderator;
+            const moder = moderator[0].Moderator;
             const moderate = moder.tag || interaction.user.tag;
 
             const inprogress = new Discord.EmbedBuilder()
-                .setColor(0x004d4d)
+                .setColor(COLORS.teal)
                 .setAuthor({name: name, iconURL: avatar})
                 .setDescription(suggestion)
                 .addFields(
@@ -86,7 +89,7 @@ module.exports = {
                 .setFooter({text: `If you would like to suggest something, use /suggestions`});
 
             const updated = new Discord.EmbedBuilder()
-                .setColor(0x3EA493)
+                .setColor(COLORS.teal)
                 .setAuthor({name: name, iconURL: avatar})
                 .setDescription(suggestion)
                 .addFields(
@@ -96,7 +99,7 @@ module.exports = {
                 .setTimestamp()
                 .setFooter({text: 'If you don\'t understand this status, please contact the moderator that updated your suggestion. Thank you!'});
 
-                (await client.users.cache.get(OGauthor)).send({ embeds: [updated] });
+                if (aut) await aut.send({ embeds: [updated] }).catch(() => {});
             interaction.reply({content: `The suggestion has been updated in the channel and the message was sent. 😃`});
 
             const chnnel = client.channels.cache.find(c => c.id === bot.suggestionsId);

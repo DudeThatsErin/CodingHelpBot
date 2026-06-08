@@ -1,6 +1,7 @@
 const connection = require('../../database.js');
 const Discord = require('discord.js');
 const bot = require('../../config/bot.json')
+const { COLORS } = require('../../logging/logger');
 
 module.exports = {
     name: 'editreport',
@@ -40,7 +41,7 @@ module.exports = {
 
           chnnel.messages.fetch(msgId).then(message => {
               let report = new Discord.EmbedBuilder()
-                  .setColor(0xB3B6B7)
+                  .setColor(COLORS.yellow)
                   .setTitle(`This bug report has been **updated**...`)
                   .setAuthor({name: authorUsername, iconURL: avatar})
                   .setDescription(`**This is the original report:**\n${original}\n\n**This is the updated status:**\n${description}`)
@@ -68,7 +69,7 @@ module.exports = {
           });
 
           const report2 = new Discord.EmbedBuilder()
-              .setColor(0xB3B6B7)
+              .setColor(COLORS.yellow)
               .setTitle('Your bug report has been updated!')
               .setAuthor({name: authorUsername, iconURL: avatar})
               .setDescription(`**This is the original report:**\n${original}\n\n**This is the updated status:**\n${description}`)
