@@ -56,7 +56,8 @@ module.exports = {
 
         const embed = new EmbedBuilder()
             .setColor(dangerousGranted ? COLORS.red : COLORS.purple)
-            .setDescription(`🎭 **Role Updated**\n${moderator ? `<@${moderator.id}> updated ` : ''}<@&${newRole.id}> (\`${newRole.name}\`)`)
+            .setDescription(`🎭 **Role Updated**\n${moderator ? `${moderator.username} (<@${moderator.id}>) updated ` : ''}<@&${newRole.id}> (\`${newRole.name}\`)`)
+
             .addFields(fields.slice(0, 24))
             .setFooter({ text: `ID: ${newRole.id}` })
             .setTimestamp();

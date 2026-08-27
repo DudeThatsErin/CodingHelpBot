@@ -52,7 +52,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor(COLORS.yellow)
                 .setAuthor({ name: user.tag ?? user.username, iconURL: user.displayAvatarURL() })
-                .setDescription(`✏️ **Nickname Changed**\n<@${user.id}>'s nickname was updated`)
+                .setDescription(`✏️ **Nickname Changed**\n${user.username} (<@${user.id}>)'s nickname was updated`)
                 .addFields(
                     { name: 'Before', value: `\`${oldMember.nickname || 'None'}\``, inline: true },
                     { name: 'After', value: `\`${newMember.nickname || 'None'}\``, inline: true },
@@ -76,7 +76,7 @@ module.exports = {
                 const embed = new EmbedBuilder()
                     .setColor(COLORS.purple)
                     .setAuthor({ name: user.tag ?? user.username, iconURL: user.displayAvatarURL() })
-                    .setDescription(`🎭 **Roles Updated**\n<@${user.id}>'s roles were updated`)
+                    .setDescription(`🎭 **Roles Updated**\n${user.username} (<@${user.id}>)'s roles were updated`)
                     .setFooter({ text: `ID: ${user.id}` })
                     .setTimestamp();
 

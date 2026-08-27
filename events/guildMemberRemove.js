@@ -41,7 +41,7 @@ module.exports = {
         const embed = new EmbedBuilder()
             .setColor(COLORS.orange)
             .setAuthor({ name: user.tag ?? user.username, iconURL: user.displayAvatarURL() })
-            .setDescription(`🚪 **User Left**\n<@${user.id}> left the server`)
+            .setDescription(`🚪 **User Left**\n${user.username} (<@${user.id}>) left the server`)
             .setFooter({ text: `Members: ${guild.memberCount} | ID: ${user.id}` })
             .setTimestamp();
 

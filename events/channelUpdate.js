@@ -103,7 +103,7 @@ module.exports = {
 
         const embed = new EmbedBuilder()
             .setColor(dangerousGranted ? COLORS.red : COLORS.purple)
-            .setDescription(`#️⃣ **Channel Updated**\n${moderator ? `<@${moderator.id}> updated ` : ''}<#${newChannel.id}>`)
+            .setDescription(`#️⃣ **Channel Updated**\n${moderator ? `${moderator.username} (<@${moderator.id}>) updated ` : ''}<#${newChannel.id}>`)
             .addFields([...fields, ...permissionBlocks].slice(0, 24))
             .setFooter({ text: `ID: ${newChannel.id}` })
             .setTimestamp();

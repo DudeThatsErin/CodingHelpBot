@@ -28,7 +28,7 @@ module.exports = {
             .setColor(COLORS.red)
             .setDescription(`🗑️ **Message Deleted**\n${truncate(content, 2000)}`)
             .addFields(
-                { name: 'Message Author', value: author ? `<@${author.id}>` : 'Unknown', inline: true },
+                { name: 'Message Author', value: author ? `${author.username} (<@${author.id}>)` : 'Unknown', inline: true },
                 { name: 'Channel', value: `<#${message.channel.id}>`, inline: true },
                 { name: 'Context', value: `[Jump to context](${jumpUrl})`, inline: false },
             )
@@ -39,7 +39,7 @@ module.exports = {
             embed.setAuthor({ name: author.tag ?? author.username, iconURL: author.displayAvatarURL() });
         }
         if (deletedBy && deletedBy.id !== author?.id) {
-            embed.addFields({ name: 'Deleted By', value: `<@${deletedBy.id}>`, inline: true });
+            embed.addFields({ name: 'Deleted By', value: `${deletedBy.username} (<@${deletedBy.id}>)`, inline: true });
         }
         if (message.attachments && message.attachments.size) {
             embed.addFields({

@@ -18,7 +18,12 @@ module.exports = {
             });
         }
         if (oldGuild.ownerId !== newGuild.ownerId) {
-            changes.push({ name: 'Owner', value: `<@${oldGuild.ownerId}> => <@${newGuild.ownerId}>` });
+            const [oldOwner, newOwner] = await Promise.all([
+                newGuild.client.users.fetch(oldGuild.ownerId).catch(() => null),
+                newGuild.client.users.fetch(newGuild.ownerId).catch(() => null),
+            ]);
+            const fmt = (u, id) => u ? `${u.username} (<@${id}>)` : `<@${id}>`;
+            changes.push({ name: 'Owner', value: `${fmt(oldOwner, oldGuild.ownerId)} => ${fmt(newOwner, newGuild.ownerId)}` });
         }
         if (oldGuild.icon !== newGuild.icon) {
             changes.push({ name: 'Icon', value: 'Server icon was changed' });
@@ -47,7 +52,7 @@ module.exports = {
         const embed = new EmbedBuilder()
             .setColor(COLORS.yellow)
             .setAuthor({ name: newGuild.name, iconURL: newGuild.iconURL() ?? undefined })
-            .setDescription(`🛠️ **Server Modified**${moderator ? `\nThis server was modified by <@${moderator.id}>` : ''}`)
+            .setDescription(`🛠️ **Server Modified**${moderator ? `\nThis server was modified by ${moderator.username} (<@${moderator.id}>)` : ''}`)
             .addFields(changes.map((c) => ({ ...c, inline: false })))
             .setFooter({ text: `ID: ${newGuild.id}` })
             .setTimestamp();

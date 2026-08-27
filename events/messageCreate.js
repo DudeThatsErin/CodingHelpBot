@@ -36,9 +36,14 @@ module.exports = {
 
             try {
                 await message.author.send(`You were banned from **${message.guild.name}** for posting in an auto-ban channel. You can appeal here: https://dyno.gg/form/3069347e`).catch(() => {});
-                await message.member.ban({ reason: `Posted in auto-ban channel ${autoBanChannelId}` });
-                await message.delete().catch(() => {});
-                console.log(`Banned ${message.author.tag} (${message.author.id}) for posting in ${autoBanChannelId}`);
+                // deleteMessageSeconds wipes all of the user's messages across
+                // every channel (Discord caps this at 7 days), not just the one
+                // they posted in the auto-ban channel.
+                await message.member.ban({
+                    reason: `Posted in auto-ban channel ${autoBanChannelId}`,
+                    deleteMessageSeconds: 7 * 24 * 60 * 60,
+                });
+                console.log(`Banned ${message.author.tag} (${message.author.id}) for posting in ${autoBanChannelId} and deleted their recent messages server-wide`);
             } catch (error) {
                 console.error(`Failed to ban ${message.author.tag} (${message.author.id}) for posting in ${autoBanChannelId}:`, error);
             }

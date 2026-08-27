@@ -13,7 +13,7 @@ module.exports = {
         const embed = new EmbedBuilder()
             .setColor(COLORS.green)
             .setAuthor({ name: user.tag ?? user.username, iconURL: user.displayAvatarURL() })
-            .setDescription(`👋 **User Joined**\n<@${user.id}> joined the server`)
+            .setDescription(`👋 **User Joined**\n${user.username} (<@${user.id}>) joined the server`)
             .addFields(
                 {
                     name: 'Account Created',

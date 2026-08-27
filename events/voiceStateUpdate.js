@@ -25,7 +25,7 @@ module.exports = {
         if (!oldCh && newCh) {
             const embed = base()
                 .setColor(COLORS.green)
-                .setDescription(`🔊 **Joined Voice**\n<@${user?.id}> joined <#${newCh}>`);
+                .setDescription(`🔊 **Joined Voice**\n${user?.username} (<@${user?.id}>) joined <#${newCh}>`);
             return send(guild, 'voice', embed);
         }
 
@@ -33,7 +33,7 @@ module.exports = {
         if (oldCh && !newCh) {
             const embed = base()
                 .setColor(COLORS.orange)
-                .setDescription(`🔇 **Left Voice**\n<@${user?.id}> left <#${oldCh}>`);
+                .setDescription(`🔇 **Left Voice**\n${user?.username} (<@${user?.id}>) left <#${oldCh}>`);
             return send(guild, 'voice', embed);
         }
 
@@ -41,7 +41,7 @@ module.exports = {
         if (oldCh && newCh && oldCh !== newCh) {
             const embed = base()
                 .setColor(COLORS.blurple)
-                .setDescription(`🔀 **Moved Voice Channels**\n<@${user?.id}> moved channels`)
+                .setDescription(`🔀 **Moved Voice Channels**\n${user?.username} (<@${user?.id}>) moved channels`)
                 .addFields(
                     { name: 'From', value: `<#${oldCh}>`, inline: true },
                     { name: 'To', value: `<#${newCh}>`, inline: true },
@@ -73,7 +73,7 @@ module.exports = {
         if (changes.length) {
             const embed = base()
                 .setColor(COLORS.teal)
-                .setDescription(`🎙️ **Voice State Updated**\n<@${user?.id}> in <#${newCh}>`)
+                .setDescription(`🎙️ **Voice State Updated**\n${user?.username} (<@${user?.id}>) in <#${newCh}>`)
                 .addFields({ name: 'Changes', value: changes.join('\n'), inline: false });
             return send(guild, 'voice', embed);
         }

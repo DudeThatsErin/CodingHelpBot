@@ -95,7 +95,7 @@ async function logWebhookEntry(guild, entry) {
         if (modifiedFields.length) {
             modifiedFields.push({ name: 'Updated By', value: userField(moderator), inline: false });
             embed.setColor(COLORS.purple)
-                .setDescription(`🪝 **Webhook Modified**\n${moderator ? `<@${moderator.id}> modified ` : ''}the webhook **${webhookName}**`)
+                .setDescription(`🪝 **Webhook Modified**\n${moderator ? `${moderator.username} (<@${moderator.id}>) modified ` : ''}the webhook **${webhookName}**`)
                 .addFields(modifiedFields);
             await send(guild, 'server', embed);
         }
@@ -103,7 +103,7 @@ async function logWebhookEntry(guild, entry) {
         if (avatarChange) {
             const avatarEmbed = new EmbedBuilder()
                 .setColor(COLORS.pink)
-                .setDescription(`🪝 **Webhook Avatar Updated**\n${moderator ? `<@${moderator.id}> ` : ''}added an avatar for **${webhookName}**`)
+                .setDescription(`🪝 **Webhook Avatar Updated**\n${moderator ? `${moderator.username} (<@${moderator.id}>) ` : ''}added an avatar for **${webhookName}**`)
                 .setFooter({ text: `ID: ${entry.id}` })
                 .setTimestamp(entry.createdTimestamp);
             await send(guild, 'server', avatarEmbed);
